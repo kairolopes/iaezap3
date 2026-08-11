@@ -17,12 +17,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   handleRequest(err: any, user: any, info: any) {
     console.log('🔐 JwtAuthGuard.handleRequest called');
-    console.log('   err:', err ? err.message : 'null');
-    console.log('   user:', user ? 'PRESENT' : 'null');
+    console.log('   err:', err ? JSON.stringify(err, null, 2) : 'null');
+    console.log('   user:', user ? JSON.stringify(user, null, 2) : 'null');
     console.log('   info:', info);
 
     if (err || !user) {
       console.log('❌ JWT validation failed');
+      if (err) {
+        console.log('❌ Error details:', err.name, '-', err.message);
+      }
       throw err || new UnauthorizedException('JWT validation failed');
     }
 
