@@ -55,4 +55,5 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
     return user;
+  }
 }
