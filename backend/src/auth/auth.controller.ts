@@ -50,6 +50,12 @@ export class AuthController {
     return { message: 'Logged out successfully' };
   }
 
+  @Get('test-public')
+  @HttpCode(HttpStatus.OK)
+  async testPublic() {
+    return { message: 'Public endpoint works!' };
+  }
+
   @Get('test-guard')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
