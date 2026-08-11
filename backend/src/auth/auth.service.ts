@@ -50,10 +50,10 @@ export class AuthService {
   }
 
   async validateToken(payload: any) {
-    const user = await this.supabase.getUser(payload.sub);
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-    return user;
+    return {
+      sub: payload.sub,
+      email: payload.email,
+      role: payload.role,
+    };
   }
 }
