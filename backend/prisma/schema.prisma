@@ -1,0 +1,287 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hash this!
+  name      String
+  role      Role     @default(ADMIN) // MASTER, OWNER, ADMIN, AGENT, VIEWER
+
+  company   Company?  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId String?
+
+  // If MASTER or OWNER, can have multiple companies
+  companies Company[] @relation("CreatedBy")
+
+  conversations Conversation[] @relation("AssignedHuman")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([email])
+}
+
+enum Role {
+  MASTER  // You - create companies & users
+  OWNER   // Company owner
+  ADMIN   // Full access to company
+  AGENT   // Can respond to chats
+  VIEWER  // Read-only
+}
+
+// ============================================
+// COMPANY (Multi-tenant)
+// ============================================
+
+model Company {
+  id            String    @id @default(cuid())
+  name          String
+  businessName  String
+  email         String
+  cnpj          String    @unique
+  timezone      String    @default("America/Sao_Paulo")
+
+  owner         User      @relation("CreatedBy", fields: [ownerId], references: [id])
+  ownerId       String
+
+  users         User[]
+  agents        Agent[]
+  conversations Conversation[]
+  documents     Document[]
+  whatsappNumbers WhatsAppNumber[]
+  schedules     Schedule[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+}
+
+// ============================================
+// AI AGENTS (Multi-agent system)
+// ============================================
+
+model Agent {
+  id            String    @id @default(cuid())
+  name          String
+  role          AgentRole // TRIAGE, SALES, SCHEDULING, SUPPORT
+  description   String    @default("")
+
+  // Personality
+  personality   Personality @relation(fields: [personalityId], references: [id])
+  personalityId String
+
+  // Instructions
+  instructions  String    @default("")
+  tone          Tone      @default(FRIENDLY)
+  language      String    @default("pt-BR")
+
+  // Autonomy settings (what this agent can do alone)
+  canRespond24h Boolean   @default(false)
+  canCreateOrder Boolean  @default(false)
+  canSchedule   Boolean   @default(false)
+  maxDiscount   Int       @default(0) // percent
+
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+
+  conversations Conversation[]
+  documents     Document[]
+
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([companyId])
+}
+
+enum AgentRole {
+  TRIAGE      // Routes to correct agent
+  SALES       // Sells products
+  SCHEDULING  // Books deliveries
+  SUPPORT     // Post-sale support
+}
+
+enum Tone {
+  FRIENDLY
+  PROFESSIONAL
+  FORMAL
+  FUNNY
+}
+
+model Personality {
+  id        String  @id @default(cuid())
+  name      String  // e.g., "Iaê"
+  description String
+  agents    Agent[]
+}
+
+// ============================================
+// CONVERSATIONS & MESSAGES
+// ============================================
+
+model Conversation {
+  id            String    @id @default(cuid())
+
+  // Customer info
+  customerName  String
+  customerPhone String
+  customerEmail String?
+
+  // Routing
+  agent         Agent     @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  agentId       String?
+
+  assignedTo    User?     @relation("AssignedHuman", fields: [assignedToId], references: [id], onDelete: SetNull)
+  assignedToId  String?
+
+  // Status
+  status        ConversationStatus @default(OPEN)
+  isResolved    Boolean   @default(false)
+  resolution    String?   // Why it was resolved
+
+  // Messages
+  messages      Message[]
+  lastMessage   DateTime?
+  messageCount  Int       @default(0)
+
+  // Metadata
+  tags          String[]  @default([])
+  metadata      Json      @default("{}")
+
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([companyId])
+  @@index([status])
+  @@index([agentId])
+}
+
+enum ConversationStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  ESCALATED
+  WAITING_HUMAN
+}
+
+model Message {
+  id            String    @id @default(cuid())
+
+  conversation  Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+
+  text          String
+  sender        MessageSender
+  senderName    String    @default("IA")
+
+  // IA metadata
+  isFromAI      Boolean   @default(false)
+  confidence    Float?    // 0-1, how confident the AI is
+  modelUsed     String?   // gpt-4, claude-3, etc
+
+  timestamp     DateTime  @default(now())
+
+  @@index([conversationId])
+}
+
+enum MessageSender {
+  CUSTOMER
+  AI
+  HUMAN
+}
+
+// ============================================
+// KNOWLEDGE BASE (Documents for AI context)
+// ============================================
+
+model Document {
+  id            String    @id @default(cuid())
+  title         String
+  type          DocumentType
+  content       String    // Full text for indexing
+
+  agent         Agent?    @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  agentId       String?
+
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+
+  usageCount    Int       @default(0)
+  updatedAt     DateTime  @updatedAt
+
+  @@index([companyId])
+  @@index([agentId])
+}
+
+enum DocumentType {
+  PDF
+  SPREADSHEET
+  FAQ
+  LINK
+  TEXT
+}
+
+// ============================================
+// WHATSAPP INTEGRATION
+// ============================================
+
+model WhatsAppNumber {
+  id            String    @id @default(cuid())
+  phoneNumber   String    @unique
+  status        WAStatus  @default(PENDING)
+
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+
+  externalId    String?   // WhatsApp Business Account ID
+  accessToken   String?   // Encrypted
+  verifiedAt    DateTime?
+
+  createdAt     DateTime  @default(now())
+
+  @@index([companyId])
+}
+
+enum WAStatus {
+  PENDING
+  CONNECTED
+  DISCONNECTED
+  ERROR
+}
+
+// ============================================
+// SCHEDULING
+// ============================================
+
+model Schedule {
+  id            String    @id @default(cuid())
+  date          DateTime
+  startTime     String    // "09:00"
+  endTime       String    // "19:00"
+  capacity      Int       @default(10)
+  booked        Int       @default(0)
+
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+
+  @@index([companyId])
+  @@index([date])
+}
