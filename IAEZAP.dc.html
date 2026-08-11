@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/nocturne-97cab455-b7e3-49b7-aab7-cf317a317632/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+body{margin:0;background:#101220;font-family:"Inter",system-ui,sans-serif;color:#e9e9ed;-webkit-font-smoothing:antialiased}
+a{color:#b5abfc;text-decoration:none}a:hover{color:#d2cefd}
+*{box-sizing:border-box}
+::selection{background:rgba(145,132,217,.3)}
+:focus-visible{outline:2px solid #9184d9;outline-offset:2px}
+input,textarea,select,button{font:inherit}
+input::placeholder,textarea::placeholder{color:#75798c}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+</style>
+</helmet>
+
+<div style="min-width:1440px;background:#101220;padding:28px 32px 40px">
+
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 18px">
+<span style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#2b2741;color:#d2cefd;border-radius:4px">1a</span>
+<span style="font:500 13px/1.2 Inter,sans-serif;color:#9397ab">IAEZAP — painel desktop (Nocturne). Clique nos itens do menu para navegar.</span>
+</div>
+
+<div style="width:1376px;height:872px;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px #3f424d,0 16px 40px rgba(0,0,0,.65);background:#161826;display:flex">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex">
+  <div style="width:52%;display:flex;flex-direction:column;justify-content:center;padding:0 88px;background:#161826">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:56px">
+      <div style="width:28px;height:28px;border-radius:8px;background:#2b2741;border:1px solid #5d5294;display:flex;align-items:center;justify-content:center;color:#b5abfc"><i class="ph-fill ph-chats-circle" style="font-size:16px"></i></div>
+      <span style="font:600 15px Inter,sans-serif;letter-spacing:.02em">IAEZAP</span>
+    </div>
+    <h1 style="font:500 34px/1.15 Inter,sans-serif;margin:0 0 10px;letter-spacing:-.02em">Entrar na sua conta</h1>
+    <p style="font:400 14px/1.6 Inter,sans-serif;color:#9397ab;margin:0 0 34px;max-width:380px;text-wrap:pretty">Atenda seus clientes no WhatsApp com uma IA que conhece o seu catálogo, sua agenda e o seu jeito de falar.</p>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:380px">
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">E-mail</span>
+      <input type="email" value="joana@floraldaesquina.com.br" style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #3f424d;background:#1d1f2e;color:#e9e9ed;font-size:13.5px"></label>
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Senha</span>
+      <input type="password" value="............" style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #3f424d;background:#1d1f2e;color:#e9e9ed;font-size:13.5px"></label>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+        <label style="display:flex;align-items:center;gap:7px;font:400 12.5px Inter,sans-serif;color:#9397ab"><input type="checkbox" checked style="accent-color:#9184d9;width:14px;height:14px">Manter conectado</label>
+        <a href="#" style="font:400 12.5px Inter,sans-serif">Esqueci minha senha</a>
+      </div>
+      <button onClick="{{ doLogin }}" style="margin-top:8px;height:42px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 13.5px Inter,sans-serif;cursor:pointer;transition:background .15s" style-hover="background:rgba(145,132,217,.14)" style-active="border-color:#b5abfc;background:rgba(145,132,217,.22)">Entrar</button>
+      <div style="display:flex;align-items:center;gap:10px;margin:6px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#3f424d)"></div><span style="font:400 11px Inter,sans-serif;color:#75798c">ou</span><div style="flex:1;height:1px;background:linear-gradient(90deg,#3f424d,transparent)"></div></div>
+      <button onClick="{{ doLogin }}" style="height:42px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 13.5px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px" style-hover="border-color:#595d6c;background:rgba(145,132,217,.06)"><i class="ph ph-whatsapp-logo" style="font-size:17px;color:#b5abfc"></i>Entrar com número do WhatsApp</button>
+      <p style="font:400 12px Inter,sans-serif;color:#75798c;margin:14px 0 0">Ainda não tem conta? <a href="#">Criar conta grátis</a></p>
+    </div>
+  </div>
+  <div style="flex:1;background:radial-gradient(120% 90% at 80% 15%,#2b2741 0%,#1b1d2c 55%,#161826 100%);border-left:1px solid #292b31;padding:64px 56px;display:flex;flex-direction:column;justify-content:center;gap:18px">
+    <span style="font:500 11px ui-monospace,Menlo,monospace;letter-spacing:.14em;color:#796cbf;text-transform:uppercase">Conversa ao vivo</span>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:420px">
+      <div style="align-self:flex-start;max-width:76%;background:#232532;border:1px solid #3f424d;border-radius:14px 14px 14px 4px;padding:11px 14px;font:400 13.5px/1.5 Inter,sans-serif;color:#cfd3e5">Oi, vocês entregam buquê hoje ainda no Butantã?</div>
+      <div style="align-self:flex-end;max-width:80%;background:#2b2741;border:1px solid #5d5294;border-radius:14px 14px 4px 14px;padding:11px 14px;font:400 13.5px/1.5 Inter,sans-serif;color:#e7e5fe">Entregamos sim 🌿 Para o Butantã temos janela das 16h às 19h. O buquê Campo Aberto (R$ 128) está pronto pra sair. Quer que eu reserve?</div>
+      <div style="align-self:flex-start;max-width:60%;background:#232532;border:1px solid #3f424d;border-radius:14px 14px 14px 4px;padding:11px 14px;font:400 13.5px/1.5 Inter,sans-serif;color:#cfd3e5">Quero. Pode ser 17h</div>
+      <div style="align-self:flex-end;display:flex;align-items:center;gap:8px;padding:9px 13px;background:rgba(145,132,217,.1);border:1px solid #423a6a;border-radius:999px;font:500 12px Inter,sans-serif;color:#b5abfc"><i class="ph ph-calendar-check" style="font-size:15px"></i>Agendamento criado · hoje 17h00</div>
+    </div>
+    <p style="font:400 12.5px/1.6 Inter,sans-serif;color:#75798c;margin:18px 0 0;max-width:360px">A IA respondeu, consultou o catálogo e abriu o agendamento sem ninguém digitar.</p>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;min-width:0">
+
+  <nav style="width:228px;flex:none;background:#131523;border-right:1px solid #292b31;display:flex;flex-direction:column;padding:18px 12px 14px">
+    <div style="display:flex;align-items:center;gap:9px;padding:0 8px 18px">
+      <div style="width:26px;height:26px;border-radius:7px;background:#2b2741;border:1px solid #5d5294;display:flex;align-items:center;justify-content:center;color:#b5abfc"><i class="ph-fill ph-chats-circle" style="font-size:15px"></i></div>
+      <span style="font:600 14px Inter,sans-serif;letter-spacing:.02em">IAEZAP</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="8">
+        <button onClick="{{ item.go }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 9px;border-radius:8px;border:1px solid {{ item.bd }};background:{{ item.bg }};color:{{ item.fg }};font:500 12.5px Inter,sans-serif;cursor:pointer;text-align:left;width:100%" style-hover="background:rgba(145,132,217,.09);color:#e4e7f5">
+          <i class="{{ item.icon }}" style="font-size:16px"></i><span style="flex:1">{{ item.label }}</span>
+          <sc-if value="{{ item.badge }}" hint-placeholder-val="{{ false }}"><span style="font:600 10.5px ui-monospace,Menlo,monospace;padding:1px 6px;border-radius:999px;background:#423a6a;color:#d2cefd">{{ item.badge }}</span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="flex:1"></div>
+    <div style="border-top:1px solid #292b31;padding-top:12px;display:flex;align-items:center;gap:9px">
+      <div style="width:28px;height:28px;border-radius:999px;background:#3f424d;display:flex;align-items:center;justify-content:center;font:600 11px Inter,sans-serif;color:#cfd3e5">JM</div>
+      <div style="flex:1;min-width:0">
+        <div style="font:500 12px Inter,sans-serif;color:#e4e7f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Joana Martins</div>
+        <div style="font:400 10.5px Inter,sans-serif;color:#75798c">Floral da Esquina</div>
+      </div>
+      <button onClick="{{ doLogout }}" title="Sair" style="width:26px;height:26px;border-radius:7px;border:1px solid transparent;background:transparent;color:#75798c;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="border-color:#3f424d;color:#b5abfc"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+    </div>
+  </nav>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#161826">
+    <header style="height:58px;flex:none;border-bottom:1px solid #292b31;display:flex;align-items:center;gap:14px;padding:0 24px">
+      <h2 style="font:500 16px Inter,sans-serif;margin:0;letter-spacing:-.01em">{{ title }}</h2>
+      <span style="font:400 12.5px Inter,sans-serif;color:#75798c">{{ subtitle }}</span>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:7px;height:28px;padding:0 11px;border-radius:999px;border:1px solid #423a6a;background:rgba(145,132,217,.08);font:500 11.5px Inter,sans-serif;color:#b5abfc"><span style="width:6px;height:6px;border-radius:999px;background:#9184d9;animation:pulseDot 2s ease-in-out infinite"></span>IA ativa</div>
+      <button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;gap:7px" style-hover="background:rgba(145,132,217,.14)"><i class="ph ph-plus" style="font-size:14px"></i>Nova ação</button>
+    </header>
+
+    <div style="flex:1;min-height:0;overflow:auto;padding:24px">
+
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:14px 16px 15px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:center;gap:8px;color:#75798c"><i class="{{ k.icon }}" style="font-size:15px"></i><span style="font:500 11.5px Inter,sans-serif;letter-spacing:.02em">{{ k.label }}</span></div>
+              <div style="font:500 27px Inter,sans-serif;letter-spacing:-.02em;color:#f3f5fe">{{ k.value }}</div>
+              <div style="font:400 11.5px Inter,sans-serif;color:{{ k.deltaColor }}">{{ k.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px 18px 14px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px">
+              <div><div style="font:500 13.5px Inter,sans-serif">Conversas por hora</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">Hoje · resolvidas pela IA em roxo</div></div>
+              <div style="display:flex;gap:2px;padding:2px;border-radius:8px;border:1px solid #3f424d">
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;background:#2b2741;color:#d2cefd">Hoje</span>
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;color:#9397ab">7 dias</span>
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;color:#9397ab">30 dias</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:10px;height:168px">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="12">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+                  <div style="width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:150px;gap:2px">
+                    <div style="width:100%;background:#3f424d;border-radius:3px 3px 0 0;height:{{ b.human }}px"></div>
+                    <div style="width:100%;background:linear-gradient(180deg,#9184d9,#5d5294);border-radius:0 0 3px 3px;height:{{ b.ai }}px"></div>
+                  </div>
+                  <span style="font:400 10.5px ui-monospace,Menlo,monospace;color:#75798c">{{ b.h }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+            <div style="font:500 13.5px Inter,sans-serif">Onde a IA parou</div>
+            <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;justify-content:space-between;font:400 12.5px Inter,sans-serif;color:#cfd3e5"><span>{{ g.label }}</span><span style="color:#9397ab;font-variant-numeric:tabular-nums">{{ g.count }}</span></div>
+                <div style="height:5px;border-radius:999px;background:#292b31;overflow:hidden"><div style="height:100%;border-radius:999px;background:#796cbf;width:{{ g.pct }}%"></div></div>
+              </div>
+            </sc-for>
+            <div style="margin-top:auto;padding-top:12px;border-top:1px solid #292b31;font:400 12px/1.6 Inter,sans-serif;color:#75798c;text-wrap:pretty">Adicione respostas na <a href="#">Base de conhecimento</a> para reduzir os repasses para atendimento humano.</div>
+          </div>
+        </div>
+
+        <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #292b31">
+            <div style="font:500 13.5px Inter,sans-serif">Últimas conversas</div>
+            <a href="#" style="font:500 12px Inter,sans-serif">Ver todas</a>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr>
+              <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 18px">Cliente</th>
+              <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 18px">Último assunto</th>
+              <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 18px">Status</th>
+              <th style="text-align:right;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 18px">Valor</th>
+              <th style="text-align:right;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 18px">Quando</th>
+            </tr></thead>
+            <tbody>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+              <tr style="border-top:1px solid #232532">
+                <td style="padding:11px 18px;font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ r.name }}</td>
+                <td style="padding:11px 18px;font:400 12.5px Inter,sans-serif;color:#9397ab">{{ r.topic }}</td>
+                <td style="padding:11px 18px"><span style="font:500 11px Inter,sans-serif;padding:3px 9px;border-radius:999px;border:1px solid {{ r.sbd }};background:{{ r.sbg }};color:{{ r.sfg }}">{{ r.status }}</span></td>
+                <td style="padding:11px 18px;text-align:right;font:400 12.5px ui-monospace,Menlo,monospace;color:#cfd3e5">{{ r.value }}</td>
+                <td style="padding:11px 18px;text-align:right;font:400 12px Inter,sans-serif;color:#75798c">{{ r.when }}</td>
+              </tr>
+            </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isWa }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px;height:100%">
+        <div style="display:flex;align-items:center;gap:14px;background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:13px 16px">
+          <div style="width:34px;height:34px;border-radius:8px;background:#2b2741;border:1px solid #5d5294;display:flex;align-items:center;justify-content:center;color:#b5abfc"><i class="ph ph-whatsapp-logo" style="font-size:19px"></i></div>
+          <div><div style="font:500 13px Inter,sans-serif">+55 11 98244-0192 · conectado</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:2px">WhatsApp Business API · sincronizado há 2 min</div></div>
+          <div style="flex:1"></div>
+          <button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#595d6c">Reconectar</button>
+          <button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Testar número</button>
+        </div>
+
+        <div style="flex:1;min-height:0;display:grid;grid-template-columns:296px 1fr;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:12px;border-bottom:1px solid #292b31"><input placeholder="Buscar conversa" style="width:100%;height:32px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:12.5px"></div>
+            <div style="flex:1;overflow:auto">
+              <sc-for list="{{ chats }}" as="c" hint-placeholder-count="6">
+                <div onClick="{{ c.go }}" style="display:flex;gap:10px;padding:11px 13px;border-bottom:1px solid #232532;cursor:pointer;background:{{ c.bg }}" style-hover="background:rgba(145,132,217,.07)">
+                  <div style="width:30px;height:30px;flex:none;border-radius:999px;background:#3f424d;display:flex;align-items:center;justify-content:center;font:600 11px Inter,sans-serif;color:#cfd3e5">{{ c.ini }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;justify-content:space-between;gap:6px"><span style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ c.name }}</span><span style="font:400 10.5px Inter,sans-serif;color:#75798c">{{ c.time }}</span></div>
+                    <div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.last }}</div>
+                  </div>
+                  <sc-if value="{{ c.ai }}" hint-placeholder-val="{{ false }}"><i class="ph-fill ph-sparkle" style="font-size:13px;color:#796cbf;align-self:center"></i></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;display:flex;flex-direction:column;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #292b31">
+              <div style="width:30px;height:30px;border-radius:999px;background:#3f424d;display:flex;align-items:center;justify-content:center;font:600 11px Inter,sans-serif;color:#cfd3e5">{{ active.ini }}</div>
+              <div><div style="font:500 13px Inter,sans-serif">{{ active.name }}</div><div style="font:400 11px Inter,sans-serif;color:#75798c">{{ active.phone }}</div></div>
+              <div style="flex:1"></div>
+              <div style="display:flex;align-items:center;gap:8px;font:500 11.5px Inter,sans-serif;color:#b5abfc;padding:5px 10px;border:1px solid #423a6a;border-radius:999px;background:rgba(145,132,217,.08)"><i class="ph-fill ph-sparkle" style="font-size:12px"></i>IA respondendo</div>
+              <button onClick="{{ takeOver }}" style="height:29px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12px Inter,sans-serif;cursor:pointer" style-hover="border-color:#9184d9;color:#d2cefd">Assumir conversa</button>
+            </div>
+            <div style="flex:1;overflow:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(90% 60% at 100% 0%,#1f2130,#1d1f2e)">
+              <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="6">
+                <div style="max-width:64%;align-self:{{ m.align }};background:{{ m.bg }};border:1px solid {{ m.bd }};border-radius:14px;padding:10px 13px;font:400 13px/1.55 Inter,sans-serif;color:{{ m.fg }}">
+                  {{ m.text }}
+                  <div style="font:400 10px ui-monospace,Menlo,monospace;color:#75798c;margin-top:5px;text-align:right">{{ m.time }}</div>
+                </div>
+              </sc-for>
+              <div style="align-self:center;display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px dashed #423a6a;font:500 11.5px Inter,sans-serif;color:#796cbf"><i class="ph ph-shopping-bag-open" style="font-size:14px"></i>Pedido #4820 criado a partir do catálogo</div>
+            </div>
+            <div style="border-top:1px solid #292b31;padding:12px 16px;display:flex;gap:10px;align-items:center">
+              <input placeholder="Escreva para assumir e responder manualmente…" style="flex:1;height:36px;padding:0 12px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px">
+              <button style="width:36px;height:36px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;cursor:pointer" style-hover="background:rgba(145,132,217,.14)"><i class="ph ph-paper-plane-tilt" style="font-size:16px"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isKb }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px">
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #292b31">
+              <div style="font:500 13.5px Inter,sans-serif">Fontes de conhecimento</div>
+              <span style="font:400 12px Inter,sans-serif;color:#75798c">14 itens · 2 precisam de revisão</span>
+              <div style="flex:1"></div>
+              <input placeholder="Buscar" style="height:30px;width:180px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:12.5px">
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+              <thead><tr>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Fonte</th>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Tipo</th>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Uso pela IA</th>
+                <th style="text-align:right;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Atualizado</th>
+              </tr></thead>
+              <tbody>
+              <sc-for list="{{ docs }}" as="d" hint-placeholder-count="6">
+                <tr style="border-top:1px solid #232532">
+                  <td style="padding:11px 16px"><div style="display:flex;align-items:center;gap:9px"><i class="{{ d.icon }}" style="font-size:15px;color:#796cbf"></i><span style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ d.name }}</span></div></td>
+                  <td style="padding:11px 16px;font:400 12.5px Inter,sans-serif;color:#9397ab">{{ d.kind }}</td>
+                  <td style="padding:11px 16px"><div style="display:flex;align-items:center;gap:8px"><div style="width:64px;height:5px;border-radius:999px;background:#292b31;overflow:hidden"><div style="height:100%;background:#796cbf;width:{{ d.pct }}%"></div></div><span style="font:400 11.5px ui-monospace,Menlo,monospace;color:#9397ab">{{ d.hits }}</span></div></td>
+                  <td style="padding:11px 16px;text-align:right;font:400 12px Inter,sans-serif;color:#75798c">{{ d.when }}</td>
+                </tr>
+              </sc-for>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px dashed #3f424d;border-radius:8px;padding:26px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+            <i class="ph ph-upload-simple" style="font-size:22px;color:#796cbf"></i>
+            <div style="font:500 13px Inter,sans-serif">Arraste PDFs, planilhas ou cole um link</div>
+            <div style="font:400 12px Inter,sans-serif;color:#75798c">A IA indexa em segundos e passa a citar a fonte nas respostas.</div>
+            <button style="margin-top:6px;height:32px;padding:0 14px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Escolher arquivos</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px">
+            <div style="font:500 13px Inter,sans-serif;margin-bottom:4px">Perguntas sem resposta</div>
+            <div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-bottom:12px">Da última semana</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ unanswered }}" as="u" hint-placeholder-count="4">
+                <div style="border:1px solid #292b31;border-radius:8px;padding:10px 12px;background:#161826">
+                  <div style="font:400 12.5px/1.5 Inter,sans-serif;color:#cfd3e5">{{ u.q }}</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+                    <span style="font:400 11px Inter,sans-serif;color:#75798c">{{ u.count }}</span>
+                    <button style="height:26px;padding:0 10px;border-radius:6px;border:1px solid #423a6a;background:transparent;color:#b5abfc;font:500 11.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Responder</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isAi }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 372px;gap:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div style="flex:1"><div style="font:500 13.5px Inter,sans-serif">Agentes</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">Cada conversa é roteada para o agente certo; o selecionado é o que você está editando abaixo.</div></div>
+              <button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12.5px Inter,sans-serif;cursor:pointer;flex:none" style-hover="border-color:#9184d9;color:#d2cefd">Novo agente</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+              <sc-for list="{{ agentes }}" as="a" hint-placeholder-count="4">
+                <div onClick="{{ a.go }}" style="border:1px solid {{ a.bd }};background:{{ a.bg }};border-radius:8px;padding:12px 13px;cursor:pointer;display:flex;gap:11px;align-items:flex-start" style-hover="border-color:#9184d9">
+                  <div style="width:28px;height:28px;flex:none;border-radius:8px;border:1px solid #423a6a;background:rgba(145,132,217,.1);display:flex;align-items:center;justify-content:center;color:#b5abfc"><i class="{{ a.icon }}" style="font-size:15px"></i></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:7px"><span style="font:500 12.5px Inter,sans-serif;color:{{ a.fg }}">{{ a.name }}</span><span style="width:6px;height:6px;border-radius:999px;background:{{ a.dot }}"></span></div>
+                    <div style="font:400 11.5px/1.5 Inter,sans-serif;color:#75798c;margin-top:3px">{{ a.role }}</div>
+                    <div style="font:400 10.5px ui-monospace,Menlo,monospace;color:#595d6c;margin-top:6px">{{ a.stat }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:8px;border:1px dashed #423a6a;font:400 12px/1.5 Inter,sans-serif;color:#9397ab"><i class="ph ph-arrows-split" style="font-size:16px;color:#796cbf;flex:none"></i>Roteamento automático: o agente Triagem lê a primeira mensagem e passa a conversa adiante. Repasse para humano em qualquer ponto.</div>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+            <div><div style="font:500 13.5px Inter,sans-serif">Personalidade de {{ agenteAtivo }}</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">Como a IA se apresenta e escreve</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Nome do atendente</span><input value="Iaê" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Idioma</span><input value="Português (BR) · informal" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Tom de voz</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-for list="{{ tones }}" as="t" hint-placeholder-count="5">
+                  <button onClick="{{ t.go }}" style="height:30px;padding:0 13px;border-radius:999px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#9184d9">{{ t.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Instruções da casa</span>
+              <textarea rows="4" style="padding:10px 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px;line-height:1.6;resize:vertical">Sempre confirme bairro e horário antes de fechar entrega. Nunca prometa desconto acima de 10%. Se o cliente citar casamento ou evento, ofereça o orçamento personalizado e chame a Joana.</textarea>
+            </label>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:500 13.5px Inter,sans-serif">Autonomia</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">O que a IA pode fazer sozinha</div></div>
+            <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid #232532">
+                <div style="flex:1"><div style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ t.label }}</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:2px">{{ t.hint }}</div></div>
+                <button onClick="{{ t.go }}" style="width:40px;height:22px;border-radius:999px;border:1px solid {{ t.bd }};background:{{ t.bg }};cursor:pointer;padding:2px;display:flex;justify-content:{{ t.just }}">
+                  <span style="width:16px;height:16px;border-radius:999px;background:{{ t.knob }};display:block"></span>
+                </button>
+              </div>
+            </sc-for>
+            <div style="display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid #232532">
+              <div style="display:flex;justify-content:space-between"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Criatividade das respostas</span><span style="font:400 12px ui-monospace,Menlo,monospace;color:#b5abfc">{{ temp }}</span></div>
+              <input type="range" min="0" max="100" value="{{ tempRaw }}" onChange="{{ setTemp }}" style="width:100%;accent-color:#9184d9">
+              <div style="display:flex;justify-content:space-between;font:400 11px Inter,sans-serif;color:#75798c"><span>Previsível, sempre igual</span><span>Solta, mais variada</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;position:sticky;top:0">
+          <div style="padding:13px 16px;border-bottom:1px solid #292b31;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-sparkle" style="font-size:14px;color:#796cbf"></i><span style="font:500 13px Inter,sans-serif">Prévia ao vivo</span><span style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-left:auto">{{ toneLabel }}</span></div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(90% 60% at 100% 0%,#1f2130,#1d1f2e)">
+            <div style="align-self:flex-start;max-width:82%;background:#232532;border:1px solid #3f424d;border-radius:14px 14px 14px 4px;padding:10px 13px;font:400 12.5px/1.55 Inter,sans-serif;color:#cfd3e5">Vocês têm arranjo pra aniversário até 150 reais?</div>
+            <div style="align-self:flex-end;max-width:88%;background:#2b2741;border:1px solid #5d5294;border-radius:14px 14px 4px 14px;padding:10px 13px;font:400 12.5px/1.55 Inter,sans-serif;color:#e7e5fe">{{ preview }}</div>
+          </div>
+          <div style="margin-top:auto;padding:13px 16px;border-top:1px solid #292b31;display:flex;gap:9px">
+            <button style="flex:1;height:32px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#595d6c">Descartar</button>
+            <button style="flex:1;height:32px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Salvar e publicar</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isCat }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+              <button onClick="{{ c.go }}" style="height:30px;padding:0 13px;border-radius:999px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#9184d9">{{ c.label }}</button>
+            </sc-for>
+          </div>
+          <div style="flex:1"></div>
+          <input placeholder="Buscar produto" style="height:30px;width:190px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:12.5px">
+          <button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;gap:7px" style-hover="background:rgba(145,132,217,.14)"><i class="ph ph-plus" style="font-size:14px"></i>Novo produto</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <sc-for list="{{ produtos }}" as="p" hint-placeholder-count="8">
+            <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
+              <div style="height:124px;background:repeating-linear-gradient(135deg,#232532 0 8px,#1f2130 8px 16px);display:flex;align-items:center;justify-content:center;border-bottom:1px solid #292b31">
+                <span style="font:400 10.5px ui-monospace,Menlo,monospace;color:#595d6c">{{ p.slot }}</span>
+              </div>
+              <div style="padding:12px 13px 13px;display:flex;flex-direction:column;gap:7px;flex:1">
+                <div style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ p.name }}</div>
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font:500 15px Inter,sans-serif;color:#f3f5fe">{{ p.price }}</span><span style="font:400 11px Inter,sans-serif;color:#75798c">{{ p.stock }}</span></div>
+                <div style="margin-top:auto;padding-top:10px;border-top:1px solid #232532;display:flex;align-items:center;justify-content:space-between">
+                  <span style="font:500 11px Inter,sans-serif;padding:3px 8px;border-radius:999px;border:1px solid {{ p.tbd }};background:{{ p.tbg }};color:{{ p.tfg }}">{{ p.tag }}</span>
+                  <span style="font:400 11px ui-monospace,Menlo,monospace;color:#75798c">{{ p.sold }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isAgd }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 296px;gap:14px;align-items:start">
+        <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #292b31">
+            <div style="font:500 13.5px Inter,sans-serif">11 – 17 de agosto</div>
+            <div style="flex:1"></div>
+            <button style="width:28px;height:28px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#9397ab;cursor:pointer" style-hover="border-color:#9184d9;color:#d2cefd"><i class="ph ph-caret-left" style="font-size:14px"></i></button>
+            <button style="width:28px;height:28px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#9397ab;cursor:pointer" style-hover="border-color:#9184d9;color:#d2cefd"><i class="ph ph-caret-right" style="font-size:14px"></i></button>
+          </div>
+          <div style="display:grid;grid-template-columns:52px repeat(7,1fr)">
+            <div></div>
+            <sc-for list="{{ dias }}" as="d" hint-placeholder-count="7">
+              <div style="padding:9px 0;text-align:center;border-left:1px solid #232532;border-bottom:1px solid #292b31"><div style="font:500 11px Inter,sans-serif;color:#9397ab;text-transform:uppercase;letter-spacing:.06em">{{ d.dow }}</div><div style="font:500 14px Inter,sans-serif;color:{{ d.numColor }};margin-top:2px">{{ d.num }}</div></div>
+            </sc-for>
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="63">
+              <div style="height:46px;border-left:{{ s.bl }};border-bottom:1px solid #232532;padding:3px;font:400 10.5px ui-monospace,Menlo,monospace;color:#595d6c;text-align:{{ s.ta }}">
+                <sc-if value="{{ s.isHour }}" hint-placeholder-val="{{ false }}"><span style="padding-right:7px">{{ s.hour }}</span></sc-if>
+                <sc-if value="{{ s.ev }}" hint-placeholder-val="{{ false }}">
+                  <div style="height:100%;border-radius:6px;border:1px solid {{ s.evBd }};background:{{ s.evBg }};padding:5px 7px;text-align:left">
+                    <div style="font:500 10.5px Inter,sans-serif;color:{{ s.evFg }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.evTitle }}</div>
+                    <div style="font:400 10px Inter,sans-serif;color:#75798c;margin-top:2px">{{ s.evSub }}</div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px">
+            <div style="font:500 13px Inter,sans-serif;margin-bottom:12px">Próximas entregas</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ proximos }}" as="p" hint-placeholder-count="4">
+                <div style="display:flex;gap:11px;align-items:flex-start">
+                  <div style="font:500 12px ui-monospace,Menlo,monospace;color:#b5abfc;width:44px;flex:none;padding-top:1px">{{ p.time }}</div>
+                  <div style="flex:1;min-width:0"><div style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ p.name }}</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:2px">{{ p.detail }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px">
+            <div style="font:500 13px Inter,sans-serif;margin-bottom:3px">Regras que a IA respeita</div>
+            <div style="font:400 11.5px/1.6 Inter,sans-serif;color:#75798c;margin-bottom:12px">Ela só oferece horários dentro disto.</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ regras }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px;font:400 12.5px Inter,sans-serif;color:#cfd3e5"><i class="{{ r.icon }}" style="font-size:15px;color:#796cbf"></i>{{ r.text }}</div>
+              </sc-for>
+            </div>
+            <button style="margin-top:14px;width:100%;height:32px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#9184d9;color:#d2cefd">Editar disponibilidade</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isPay }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <sc-for list="{{ payKpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:14px 16px 15px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:center;gap:8px;color:#75798c"><i class="{{ k.icon }}" style="font-size:15px"></i><span style="font:500 11.5px Inter,sans-serif">{{ k.label }}</span></div>
+              <div style="font:500 25px Inter,sans-serif;letter-spacing:-.02em;color:#f3f5fe">{{ k.value }}</div>
+              <div style="font:400 11.5px Inter,sans-serif;color:{{ k.deltaColor }}">{{ k.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px">
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #292b31">
+              <div style="font:500 13.5px Inter,sans-serif">Transações</div>
+              <div style="flex:1"></div>
+              <div style="display:flex;gap:2px;padding:2px;border-radius:8px;border:1px solid #3f424d">
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;background:#2b2741;color:#d2cefd">Todas</span>
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;color:#9397ab">Pagas</span>
+                <span style="font:500 11.5px Inter,sans-serif;padding:4px 10px;border-radius:6px;color:#9397ab">Pendentes</span>
+              </div>
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+              <thead><tr>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Pedido</th>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Cliente</th>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Método</th>
+                <th style="text-align:left;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Status</th>
+                <th style="text-align:right;font:500 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#75798c;padding:9px 16px">Valor</th>
+              </tr></thead>
+              <tbody>
+              <sc-for list="{{ pagamentos }}" as="p" hint-placeholder-count="7">
+                <tr style="border-top:1px solid #232532">
+                  <td style="padding:11px 16px;font:400 12px ui-monospace,Menlo,monospace;color:#9397ab">{{ p.id }}</td>
+                  <td style="padding:11px 16px;font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ p.name }}</td>
+                  <td style="padding:11px 16px"><div style="display:flex;align-items:center;gap:8px;font:400 12.5px Inter,sans-serif;color:#9397ab"><i class="{{ p.icon }}" style="font-size:15px;color:#796cbf"></i>{{ p.method }}</div></td>
+                  <td style="padding:11px 16px"><span style="font:500 11px Inter,sans-serif;padding:3px 9px;border-radius:999px;border:1px solid {{ p.sbd }};background:{{ p.sbg }};color:{{ p.sfg }}">{{ p.status }}</span></td>
+                  <td style="padding:11px 16px;text-align:right;font:400 12.5px ui-monospace,Menlo,monospace;color:#cfd3e5">{{ p.value }}</td>
+                </tr>
+              </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px">
+              <div style="font:500 13px Inter,sans-serif;margin-bottom:12px">Por método</div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <sc-for list="{{ metodos }}" as="m" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;justify-content:space-between;font:400 12.5px Inter,sans-serif;color:#cfd3e5"><span>{{ m.label }}</span><span style="color:#9397ab;font-variant-numeric:tabular-nums">{{ m.value }}</span></div>
+                    <div style="height:5px;border-radius:999px;background:#292b31;overflow:hidden"><div style="height:100%;border-radius:999px;background:#796cbf;width:{{ m.pct }}%"></div></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:16px">
+              <div style="font:500 13px Inter,sans-serif;margin-bottom:3px">Repasse</div>
+              <div style="font:400 11.5px/1.6 Inter,sans-serif;color:#75798c">Próximo depósito em 12/08, quinta-feira.</div>
+              <div style="font:500 22px Inter,sans-serif;color:#f3f5fe;margin:10px 0 12px">R$ 4.982,10</div>
+              <button style="width:100%;height:32px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Antecipar recebíveis</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isCfg }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:196px 1fr;gap:20px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:2px;position:sticky;top:0">
+          <sc-for list="{{ cfgNav }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.go }}" style="text-align:left;height:32px;padding:0 11px;border-radius:8px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.09)">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:760px">
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:500 13.5px Inter,sans-serif">Dados do negócio</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">Aparece nas respostas da IA e nos recibos</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Nome fantasia</span><input value="Floral da Esquina" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">CNPJ</span><input value="34.221.908/0001-45" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Endereço</span><input value="R. Cardeal Arcoverde, 1420 — Pinheiros" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px Inter,sans-serif;color:#b2b6ca">Fuso horário</span><input value="América/São_Paulo (GMT-3)" style="height:36px;padding:0 11px;border-radius:8px;border:1px solid #3f424d;background:#161826;color:#e9e9ed;font-size:13px"></label>
+            </div>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px">
+            <div style="display:flex;align-items:center;padding:15px 20px 13px"><div><div style="font:500 13.5px Inter,sans-serif">Equipe</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:3px">Quem pode assumir conversas da IA</div></div><div style="flex:1"></div><button style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #9184d9;background:transparent;color:#d2cefd;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="background:rgba(145,132,217,.14)">Convidar</button></div>
+            <sc-for list="{{ equipe }}" as="e" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:11px;padding:11px 20px;border-top:1px solid #232532">
+                <div style="width:28px;height:28px;border-radius:999px;background:#3f424d;display:flex;align-items:center;justify-content:center;font:600 11px Inter,sans-serif;color:#cfd3e5">{{ e.ini }}</div>
+                <div style="flex:1"><div style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ e.name }}</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c">{{ e.mail }}</div></div>
+                <span style="font:500 11px Inter,sans-serif;padding:3px 9px;border-radius:999px;border:1px solid #3f424d;color:#9397ab">{{ e.role }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px">
+            <div style="font:500 13.5px Inter,sans-serif;margin-bottom:4px">Notificações</div>
+            <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid #232532">
+                <div style="flex:1"><div style="font:500 12.5px Inter,sans-serif;color:#e4e7f5">{{ n.label }}</div><div style="font:400 11.5px Inter,sans-serif;color:#75798c;margin-top:2px">{{ n.hint }}</div></div>
+                <button onClick="{{ n.go }}" style="width:40px;height:22px;border-radius:999px;border:1px solid {{ n.bd }};background:{{ n.bg }};cursor:pointer;padding:2px;display:flex;justify-content:{{ n.just }}"><span style="width:16px;height:16px;border-radius:999px;background:{{ n.knob }};display:block"></span></button>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#1d1f2e;border:1px solid #292b31;border-radius:8px;padding:18px 20px;display:flex;align-items:center;gap:18px">
+            <div style="flex:1"><div style="font:500 13.5px Inter,sans-serif">Plano Pro · R$ 149/mês</div><div style="font:400 11.5px/1.6 Inter,sans-serif;color:#75798c;margin-top:4px">3 números de WhatsApp · 4 agentes de IA · conversas ilimitadas. Renova em 02/09.</div></div>
+            <button style="height:32px;padding:0 14px;border-radius:8px;border:1px solid #3f424d;background:transparent;color:#cfd3e5;font:500 12.5px Inter,sans-serif;cursor:pointer" style-hover="border-color:#9184d9;color:#d2cefd">Gerenciar plano</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+
+<p style="font:400 12px/1.5 Inter,sans-serif;color:#75798c;margin:18px 0 0">Próximos passos: "desenha o Catálogo e os Agendamentos" · "versão clara da 1a" · "mostra o estado vazio do WhatsApp desconectado"</p>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { screen: "login", tone: "Próxima", temp: 45, chat: 0 };
+
+  fmtTone(t) { return t; }
+
+  renderVals() {
+    const s = this.state.screen;
+    const go = (id) => () => this.setState({ screen: id });
+    const items = [
+      ["dashboard", "Dashboard", "ph ph-squares-four", ""],
+      ["whatsapp", "WhatsApp", "ph ph-whatsapp-logo", "3"],
+      ["kb", "Base de conhecimento", "ph ph-books", ""],
+      ["ai", "Configurar IA", "ph ph-sparkle", ""],
+      ["catalogo", "Catálogo", "ph ph-shopping-bag-open", ""],
+      ["agenda", "Agendamentos", "ph ph-calendar-dots", "2"],
+      ["pagamentos", "Pagamentos", "ph ph-credit-card", ""],
+      ["config", "Configurações", "ph ph-gear-six", ""],
+    ];
+    const nav = items.map(([id, label, icon, badge]) => ({
+      id, label, icon, badge,
+      go: go(id),
+      bg: s === id ? "rgba(145,132,217,.13)" : "transparent",
+      bd: s === id ? "#423a6a" : "transparent",
+      fg: s === id ? "#e7e5fe" : "#9397ab",
+    }));
+
+    const meta = {
+      dashboard: ["Dashboard", "Hoje, 11 de agosto"],
+      whatsapp: ["WhatsApp", "1 número conectado"],
+      kb: ["Base de conhecimento", "14 fontes indexadas"],
+      ai: ["Configurar IA", "Alterações não publicadas"],
+      catalogo: ["Catálogo", "48 itens · 41 visíveis para a IA"],
+      agenda: ["Agendamentos", "11 – 17 de agosto"],
+      pagamentos: ["Pagamentos", "Agosto até hoje"],
+      config: ["Configurações", "Floral da Esquina"],
+    }[s] || ["", ""];
+
+    const kpis = [
+      { label: "Conversas hoje", value: "184", delta: "+22% vs. ontem", deltaColor: "#b5abfc", icon: "ph ph-chats-teardrop" },
+      { label: "Resolvidas pela IA", value: "87%", delta: "160 sem humano", deltaColor: "#9397ab", icon: "ph ph-sparkle" },
+      { label: "Tempo de resposta", value: "8s", delta: "média das 24h", deltaColor: "#9397ab", icon: "ph ph-timer" },
+      { label: "Vendas via chat", value: "R$ 6.240", delta: "38 pedidos fechados", deltaColor: "#b5abfc", icon: "ph ph-currency-circle-dollar" },
+    ];
+
+    const barData = [[8,6,14],[9,10,20],[10,16,34],[11,14,30],[12,9,22],[13,7,17],[14,12,26],[15,18,38],[16,20,46],[17,15,33],[18,9,21],[19,5,12]];
+    const bars = barData.map(([h, human, ai]) => ({ h: h + "h", human: human * 2, ai: ai * 2 }));
+
+    const gaps = [
+      { label: "Preço fora do catálogo", count: 18, pct: 100 },
+      { label: "Entrega em outra cidade", count: 12, pct: 66 },
+      { label: "Troca e devolução", count: 9, pct: 50 },
+      { label: "Nota fiscal / CNPJ", count: 5, pct: 28 },
+    ];
+
+    const st = {
+      ia: { status: "Resolvida pela IA", sbg: "rgba(145,132,217,.12)", sbd: "#423a6a", sfg: "#b5abfc" },
+      hum: { status: "Com atendente", sbg: "rgba(233,233,237,.06)", sbd: "#3f424d", sfg: "#cfd3e5" },
+      open: { status: "Aguardando", sbg: "transparent", sbd: "#595d6c", sfg: "#9397ab" },
+    };
+    const rows = [
+      { name: "Marina Prado", topic: "Buquê para entrega hoje", value: "R$ 128,00", when: "há 4 min", ...st.ia },
+      { name: "Ricardo Alves", topic: "Orçamento para casamento", value: "—", when: "há 12 min", ...st.hum },
+      { name: "Camila Souza", topic: "Reagendar entrega de sexta", value: "R$ 96,00", when: "há 26 min", ...st.ia },
+      { name: "Pedro Nunes", topic: "Pagamento por Pix não caiu", value: "R$ 210,00", when: "há 41 min", ...st.open },
+      { name: "Luiza Ferraz", topic: "Assinatura mensal de flores", value: "R$ 320,00", when: "há 1 h", ...st.ia },
+    ];
+
+    const chatData = [
+      { ini: "MP", name: "Marina Prado", phone: "+55 11 97733-1188", time: "4 min", last: "Perfeito, pode reservar!", ai: true },
+      { ini: "RA", name: "Ricardo Alves", phone: "+55 11 98812-0044", time: "12 min", last: "Seria pra 120 convidados…", ai: false },
+      { ini: "CS", name: "Camila Souza", phone: "+55 11 99120-7781", time: "26 min", last: "Consigo mudar pra sábado?", ai: true },
+      { ini: "PN", name: "Pedro Nunes", phone: "+55 11 96655-2210", time: "41 min", last: "Fiz o Pix às 10h", ai: false },
+      { ini: "LF", name: "Luiza Ferraz", phone: "+55 11 98004-3312", time: "1 h", last: "Quero a assinatura mensal", ai: true },
+      { ini: "TB", name: "Thiago Bueno", phone: "+55 11 97001-5566", time: "2 h", last: "Vocês abrem domingo?", ai: true },
+    ];
+    const ci = this.state.chat;
+    const chats = chatData.map((c, i) => ({
+      ...c, ini: c.ini, bg: i === ci ? "rgba(145,132,217,.11)" : "transparent",
+      go: () => this.setState({ chat: i }),
+    }));
+    const active = chatData[ci];
+
+    const you = { align: "flex-end", bg: "#2b2741", bd: "#5d5294", fg: "#e7e5fe" };
+    const them = { align: "flex-start", bg: "#232532", bd: "#3f424d", fg: "#cfd3e5" };
+    const msgs = [
+      { text: "Oi! Vi o buquê Campo Aberto no instagram, ainda tem?", time: "14:02", ...them },
+      { text: "Oi Marina! Tem sim 🌿 O Campo Aberto sai por R$ 128 e temos duas unidades prontas hoje.", time: "14:02", ...you },
+      { text: "Entrega no Butantã hoje ainda?", time: "14:03", ...them },
+      { text: "Consigo entre 16h e 19h. A taxa pro Butantã é R$ 12. Fecho pra 17h?", time: "14:03", ...you },
+      { text: "Perfeito, pode reservar!", time: "14:05", ...them },
+      { text: "Reservado 🙌 Te mando o Pix agora e a confirmação do endereço em seguida.", time: "14:05", ...you },
+    ];
+
+    const docs = [
+      { name: "Tabela de preços — agosto", kind: "Planilha", pct: 100, hits: "412", when: "há 2 dias", icon: "ph ph-table" },
+      { name: "Política de entrega e taxas", kind: "Documento", pct: 78, hits: "318", when: "há 1 semana", icon: "ph ph-file-text" },
+      { name: "Perguntas frequentes", kind: "FAQ", pct: 64, hits: "260", when: "há 3 dias", icon: "ph ph-question" },
+      { name: "Cuidados com as flores", kind: "Documento", pct: 31, hits: "126", when: "há 1 mês", icon: "ph ph-file-text" },
+      { name: "site floraldaesquina.com.br", kind: "Link", pct: 22, hits: "89", when: "há 4 dias", icon: "ph ph-link-simple" },
+      { name: "Contratos de evento (PDF)", kind: "PDF", pct: 9, hits: "37", when: "há 2 meses", icon: "ph ph-file-pdf" },
+    ];
+    const unanswered = [
+      { q: "Vocês emitem nota fiscal para empresa?", count: "perguntada 5×" },
+      { q: "Entregam em Osasco?", count: "perguntada 4×" },
+      { q: "Tem opção de flor artificial?", count: "perguntada 3×" },
+      { q: "Aceitam devolução se murchar?", count: "perguntada 3×" },
+    ];
+
+    const toneList = ["Próxima", "Direta", "Formal", "Bem-humorada"];
+    const tones = toneList.map((label) => ({
+      label,
+      go: () => this.setState({ tone: label }),
+      bg: this.state.tone === label ? "rgba(145,132,217,.14)" : "transparent",
+      bd: this.state.tone === label ? "#9184d9" : "#3f424d",
+      fg: this.state.tone === label ? "#d2cefd" : "#9397ab",
+    }));
+    const previews = {
+      "Próxima": "Temos sim! O arranjo Vaso Ametista sai por R$ 139 e fica lindo de aniversário 💜 Quer que eu separe pra você?",
+      "Direta": "Sim. Vaso Ametista, R$ 139, disponível hoje. Reservo?",
+      "Formal": "Boa tarde. Temos o arranjo Vaso Ametista por R$ 139,00, dentro do seu orçamento. Posso reservá-lo?",
+      "Bem-humorada": "Temos, e ele é bonito de doer: Vaso Ametista, R$ 139 — cabe no bolso e rouba a cena da festa. Separo?",
+    };
+
+    if (!this._tg) this._tg = { auto: true, pix: true, agenda: true, desc: false };
+    const tdefs = [
+      ["auto", "Responder sozinha 24h", "Sem esperar aprovação do atendente"],
+      ["pix", "Gerar cobrança Pix", "Envia o QR e confirma o pagamento no chat"],
+      ["agenda", "Marcar entregas na agenda", "Só em horários livres da semana"],
+      ["desc", "Oferecer desconto até 10%", "Apenas quando o cliente pedir desconto"],
+    ];
+    const toggles = tdefs.map(([id, label, hint]) => {
+      const on = this._tg[id];
+      return {
+        label, hint,
+        bg: on ? "rgba(145,132,217,.22)" : "#292b31",
+        bd: on ? "#9184d9" : "#3f424d",
+        knob: on ? "#d2cefd" : "#75798c",
+        just: on ? "flex-end" : "flex-start",
+        go: () => { this._tg[id] = !on; this.forceUpdate(); },
+      };
+    });
+
+    if (!this._cat) this._cat = "Todos";
+    const cats = ["Todos", "Buquês", "Arranjos", "Vasos", "Assinaturas"].map((label) => ({
+      label,
+      go: () => { this._cat = label; this.forceUpdate(); },
+      bg: this._cat === label ? "rgba(145,132,217,.14)" : "transparent",
+      bd: this._cat === label ? "#9184d9" : "#3f424d",
+      fg: this._cat === label ? "#d2cefd" : "#9397ab",
+    }));
+    const ptag = {
+      on: { tag: "IA vende", tbg: "rgba(145,132,217,.12)", tbd: "#423a6a", tfg: "#b5abfc" },
+      low: { tag: "Estoque baixo", tbg: "transparent", tbd: "#595d6c", tfg: "#9397ab" },
+      off: { tag: "Oculto no chat", tbg: "transparent", tbd: "#3f424d", tfg: "#75798c" },
+    };
+    const produtos = [
+      { name: "Buquê Campo Aberto", price: "R$ 128", stock: "12 em estoque", sold: "38 vendas", slot: "foto do buquê", ...ptag.on },
+      { name: "Vaso Ametista", price: "R$ 139", stock: "5 em estoque", sold: "21 vendas", slot: "foto do arranjo", ...ptag.on },
+      { name: "Arranjo Meia-Noite", price: "R$ 186", stock: "2 em estoque", sold: "14 vendas", slot: "foto do arranjo", ...ptag.low },
+      { name: "Mini Suculentas", price: "R$ 64", stock: "30 em estoque", sold: "52 vendas", slot: "foto do produto", ...ptag.on },
+      { name: "Assinatura Mensal", price: "R$ 320", stock: "vagas abertas", sold: "9 ativas", slot: "foto do plano", ...ptag.on },
+      { name: "Coroa de Flores", price: "sob consulta", stock: "produção 24h", sold: "3 vendas", slot: "foto do produto", ...ptag.off },
+      { name: "Orquídea Phalaenopsis", price: "R$ 210", stock: "7 em estoque", sold: "17 vendas", slot: "foto da planta", ...ptag.on },
+      { name: "Cesta Café da Manhã", price: "R$ 245", stock: "1 em estoque", sold: "11 vendas", slot: "foto da cesta", ...ptag.low },
+    ];
+
+    const dias = ["Seg 11", "Ter 12", "Qua 13", "Qui 14", "Sex 15", "Sáb 16", "Dom 17"].map((d, i) => {
+      const p = d.split(" ");
+      return { dow: p[0], num: p[1], numColor: i === 0 ? "#d2cefd" : "#e4e7f5" };
+    });
+    const evMap = {
+      "0-1": ["Marina Prado", "Butantã · R$ 128"],
+      "2-0": ["Ricardo Alves", "Visita ao ateliê"],
+      "3-4": ["Camila Souza", "Pinheiros · R$ 96"],
+      "4-2": ["Luiza Ferraz", "Assinatura mensal"],
+      "5-3": ["Evento Bertoni", "Casamento · 12 arranjos"],
+      "1-5": ["Thiago Bueno", "Vila Madalena · R$ 64"],
+    };
+    const hours = ["09h", "11h", "13h", "15h", "17h", "19h"];
+    const slots = [];
+    hours.forEach((hour, r) => {
+      slots.push({ isHour: true, hour, ev: false, bl: "none", ta: "right" });
+      for (let c = 0; c < 7; c++) {
+        const e = evMap[c + "-" + r];
+        slots.push({
+          isHour: false, hour: "", ta: "left", bl: "1px solid #232532",
+          ev: !!e, evTitle: e ? e[0] : "", evSub: e ? e[1] : "",
+          evBg: "rgba(145,132,217,.12)", evBd: "#423a6a", evFg: "#e7e5fe",
+        });
+      }
+    });
+    const proximos = [
+      { time: "17h00", name: "Marina Prado", detail: "Buquê Campo Aberto · Butantã" },
+      { time: "19h00", name: "Thiago Bueno", detail: "Mini suculentas · Vila Madalena" },
+      { time: "amanhã", name: "Ricardo Alves", detail: "Visita ao ateliê · orçamento evento" },
+      { time: "qua", name: "Camila Souza", detail: "Reagendado pela IA · Pinheiros" },
+    ];
+    const regras = [
+      { icon: "ph ph-clock", text: "Entregas das 9h às 19h" },
+      { icon: "ph ph-calendar-x", text: "Domingo fechado" },
+      { icon: "ph ph-timer", text: "Mínimo 3h de antecedência" },
+      { icon: "ph ph-map-pin", text: "Raio de 12 km do ateliê" },
+    ];
+
+    const payKpis = [
+      { label: "Recebido no mês", value: "R$ 38.410", delta: "+14% vs. julho", deltaColor: "#b5abfc", icon: "ph ph-currency-circle-dollar" },
+      { label: "Pago via Pix no chat", value: "72%", delta: "confirmação automática", deltaColor: "#9397ab", icon: "ph ph-qr-code" },
+      { label: "Aguardando pagamento", value: "R$ 1.980", delta: "6 pedidos", deltaColor: "#9397ab", icon: "ph ph-hourglass-medium" },
+      { label: "Ticket médio", value: "R$ 164", delta: "+R$ 12 vs. julho", deltaColor: "#b5abfc", icon: "ph ph-receipt" },
+    ];
+    const pst = {
+      pago: { status: "Pago", sbg: "rgba(145,132,217,.12)", sbd: "#423a6a", sfg: "#b5abfc" },
+      pend: { status: "Aguardando", sbg: "transparent", sbd: "#595d6c", sfg: "#9397ab" },
+      falh: { status: "Falhou", sbg: "rgba(233,233,237,.05)", sbd: "#3f424d", sfg: "#cfd3e5" },
+    };
+    const pagamentos = [
+      { id: "#4820", name: "Marina Prado", method: "Pix", icon: "ph ph-qr-code", value: "R$ 140,00", ...pst.pago },
+      { id: "#4819", name: "Luiza Ferraz", method: "Cartão · 2x", icon: "ph ph-credit-card", value: "R$ 320,00", ...pst.pago },
+      { id: "#4818", name: "Pedro Nunes", method: "Pix", icon: "ph ph-qr-code", value: "R$ 210,00", ...pst.falh },
+      { id: "#4817", name: "Camila Souza", method: "Pix", icon: "ph ph-qr-code", value: "R$ 96,00", ...pst.pago },
+      { id: "#4816", name: "Thiago Bueno", method: "Link de pagamento", icon: "ph ph-link-simple", value: "R$ 64,00", ...pst.pend },
+      { id: "#4815", name: "Ateliê Bertoni", method: "Boleto", icon: "ph ph-barcode", value: "R$ 1.480,00", ...pst.pend },
+      { id: "#4814", name: "Renata Lima", method: "Cartão", icon: "ph ph-credit-card", value: "R$ 186,00", ...pst.pago },
+    ];
+    const metodos = [
+      { label: "Pix", value: "R$ 27.650", pct: 100 },
+      { label: "Cartão", value: "R$ 8.240", pct: 42 },
+      { label: "Boleto", value: "R$ 2.520", pct: 16 },
+    ];
+
+    if (!this._cfg) this._cfg = "Negócio";
+    const cfgNav = ["Negócio", "Equipe", "Notificações", "Integrações", "Plano e cobrança"].map((label) => ({
+      label,
+      go: () => { this._cfg = label; this.forceUpdate(); },
+      bg: this._cfg === label ? "rgba(145,132,217,.13)" : "transparent",
+      bd: this._cfg === label ? "#423a6a" : "transparent",
+      fg: this._cfg === label ? "#e7e5fe" : "#9397ab",
+    }));
+    const equipe = [
+      { ini: "JM", name: "Joana Martins", mail: "joana@floraldaesquina.com.br", role: "Dona" },
+      { ini: "BR", name: "Bruno Rocha", mail: "bruno@floraldaesquina.com.br", role: "Atendente" },
+      { ini: "SC", name: "Sofia Cardoso", mail: "sofia@floraldaesquina.com.br", role: "Entregas" },
+    ];
+    if (!this._nt) this._nt = { repasse: true, pgto: true, resumo: false };
+    const notifs = [
+      ["repasse", "Conversa repassada para humano", "Push no celular e e-mail"],
+      ["pgto", "Pagamento confirmado", "Só quando o valor passa de R$ 200"],
+      ["resumo", "Resumo diário às 20h", "O que a IA resolveu e o que ficou pendente"],
+    ].map(([id, label, hint]) => {
+      const on = this._nt[id];
+      return {
+        label, hint,
+        bg: on ? "rgba(145,132,217,.22)" : "#292b31",
+        bd: on ? "#9184d9" : "#3f424d",
+        knob: on ? "#d2cefd" : "#75798c",
+        just: on ? "flex-end" : "flex-start",
+        go: () => { this._nt[id] = !on; this.forceUpdate(); },
+      };
+    });
+
+    if (!this._ag) this._ag = "Vendas";
+    const agentes = [
+      ["Triagem", "Lê a primeira mensagem e encaminha", "ph ph-arrows-split", "184 conversas hoje", "#9184d9"],
+      ["Vendas", "Catálogo, preços e fechamento de pedido", "ph ph-shopping-bag-open", "96 conversas · 38 pedidos", "#9184d9"],
+      ["Agendamento", "Horários de entrega e remarcações", "ph ph-calendar-dots", "41 conversas · 27 entregas", "#9184d9"],
+      ["Pós-venda", "Status, troca e reclamação", "ph ph-lifebuoy", "23 conversas · 4 repasses", "#75798c"],
+    ].map(([name, role, icon, stat, dot]) => ({
+      name, role, icon, stat, dot,
+      go: () => { this._ag = name; this.forceUpdate(); },
+      bg: this._ag === name ? "rgba(145,132,217,.11)" : "#161826",
+      bd: this._ag === name ? "#9184d9" : "#292b31",
+      fg: this._ag === name ? "#e7e5fe" : "#cfd3e5",
+    }));
+
+    return {
+      isLogin: s === "login", isApp: s !== "login",
+      isDash: s === "dashboard", isWa: s === "whatsapp", isKb: s === "kb", isAi: s === "ai",
+      isCat: s === "catalogo", isAgd: s === "agenda", isPay: s === "pagamentos", isCfg: s === "config",
+      cats, produtos, dias, slots, proximos, regras,
+      payKpis, pagamentos, metodos, cfgNav, equipe, notifs,
+      agentes, agenteAtivo: this._ag,
+      title: meta[0], subtitle: meta[1],
+      doLogin: () => this.setState({ screen: "dashboard" }),
+      doLogout: () => this.setState({ screen: "login" }),
+      nav, kpis, bars, gaps, rows, chats, active, msgs, docs, unanswered, tones, toggles,
+      toneLabel: "Tom " + this.state.tone.toLowerCase(),
+      preview: previews[this.state.tone],
+      temp: (this.state.temp / 100).toFixed(2),
+      tempRaw: this.state.temp,
+      setTemp: (e) => this.setState({ temp: Number(e.target.value) }),
+      takeOver: () => {},
+    };
+  }
+}
+</script>
+</body>
+</html>
