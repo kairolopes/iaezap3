@@ -7,8 +7,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt.guard';
 import { SupabaseModule } from '../supabase/supabase.module';
 
-const jwtSecret = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
+const jwtSecret = process.env.JWT_SECRET || 'dev-secret';
 console.log('📝 AuthModule JwtModule.register secret length:', jwtSecret.length);
+console.log('📝 AuthModule JWT_SECRET from env:', process.env.JWT_SECRET ? 'YES' : 'NO (using fallback)');
 
 @Module({
   imports: [
