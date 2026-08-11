@@ -60,4 +60,31 @@ export class AuthController {
       },
     };
   }
+
+  @Post('admin/create-user')
+  @HttpCode(HttpStatus.CREATED)
+  async createUserAdmin(@Body() body: { email: string; name: string; role?: string }) {
+    try {
+      const supabaseAdmin = this.auth['supabase'].getAdminClient();
+
+      const { data, error } = await supabaseAdmin.auth.admin.createUser({
+        email: body.email,
+        password: Math.random().toString(36).slice(-12),
+        email_confirm: true,
+        user_metadata: { name: body.name },
+      });
+
+      if (error) throw new Error(error.message);
+
+      return {
+        id: data.user.id,
+        email: data.user.email,
+        name: body.name,
+        role: body.role || 'user',
+        message: 'User created successfully. User can reset password via email.',
+      };
+    } catch (error: any) {
+      throw new UnauthorizedException(error.message || 'Failed to create user');
+    }
+  }
 }
