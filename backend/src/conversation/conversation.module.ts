@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConversationService } from './conversation.service';
 import { ConversationController } from './conversation.controller';
-import { PrismaModule } from '../prisma/prisma.module';
-import { AgentModule } from '../agent/agent.module';
+import { SupabaseModule } from '../supabase/supabase.module';
 
 @Module({
-  imports: [PrismaModule, AgentModule],
+  imports: [SupabaseModule],
   providers: [ConversationService],
   controllers: [ConversationController],
 })

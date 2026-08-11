@@ -1,54 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class AgentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private supabase: SupabaseService) {}
 
   async create(companyId: string, data: any) {
-    // Get or create personality
-    const personality = await this.prisma.personality.findFirst({
-      where: { name: data.personality || 'Default' },
-    });
-
-    return this.prisma.agent.create({
-      data: {
-        ...data,
-        company: { connect: { id: companyId } },
-        personality: {
-          connect: {
-            id: personality?.id || (await this.createDefaultPersonality()).id,
-          },
-        },
-      },
+    return this.supabase.createAgent(companyId, {
+      name: data.name,
+      role: data.role || 'SALES',
+      personality: data.personality || 'Friendly',
+      tone: data.tone || 'FRIENDLY',
+      language: data.language || 'pt-BR',
+      instructions: data.instructions || '',
+      can_respond_24h: data.canRespond24h || false,
+      can_create_order: data.canCreateOrder || false,
+      can_schedule: data.canSchedule || false,
+      max_discount: data.maxDiscount || 0,
+      is_active: true,
     });
   }
 
   async findByCompany(companyId: string) {
-    return this.prisma.agent.findMany({
-      where: { companyId, isActive: true },
-      include: { personality: true },
-    });
+    return this.supabase.getAgents(companyId);
   }
 
   async findOne(id: string) {
-    return this.prisma.agent.findUnique({
-      where: { id },
-      include: { personality: true, conversations: { take: 10 } },
-    });
+    return this.supabase.query('agents').then(({ data }) => data?.find(a => a.id === id));
   }
 
   async update(id: string, data: any) {
-    return this.prisma.agent.update({
-      where: { id },
-      data,
-      include: { personality: true },
-    });
+    return this.supabase.updateAgent(id, data);
   }
 
-  private async createDefaultPersonality() {
-    return this.prisma.personality.create({
-      data: { name: 'Default', description: 'Default personality' },
-    });
+  async delete(id: string) {
+    return this.supabase.deleteAgent(id);
+  }
+
+  // List available roles
+  async getRoles() {
+    return ['TRIAGE', 'SALES', 'SCHEDULING', 'SUPPORT'];
+  }
+
+  // List available tones
+  async getTones() {
+    return ['FRIENDLY', 'PROFESSIONAL', 'FORMAL', 'FUNNY'];
   }
 }

@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Put, Param, Body, UseGuards, Req } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { AgentService } from './agent.service';
 
 @Controller('agents')
-@UseGuards(AuthGuard('jwt'))
 export class AgentController {
   constructor(private agent: AgentService) {}
 
@@ -25,5 +23,20 @@ export class AgentController {
   @Put(':id')
   update(@Param('id') id: string, @Body() data: any) {
     return this.agent.update(id, data);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.agent.delete(id);
+  }
+
+  @Get('/meta/roles')
+  getRoles() {
+    return this.agent.getRoles();
+  }
+
+  @Get('/meta/tones')
+  getTones() {
+    return this.agent.getTones();
   }
 }
