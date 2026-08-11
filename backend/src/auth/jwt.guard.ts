@@ -1,4 +1,4 @@
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
@@ -13,5 +13,20 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       console.log(JSON.stringify(request.headers, null, 2));
     }
     return super.canActivate(context);
+  }
+
+  handleRequest(err: any, user: any, info: any) {
+    console.log('🔐 JwtAuthGuard.handleRequest called');
+    console.log('   err:', err ? err.message : 'null');
+    console.log('   user:', user ? 'PRESENT' : 'null');
+    console.log('   info:', info);
+
+    if (err || !user) {
+      console.log('❌ JWT validation failed');
+      throw err || new UnauthorizedException('JWT validation failed');
+    }
+
+    console.log('✅ JWT validation success');
+    return user;
   }
 }
