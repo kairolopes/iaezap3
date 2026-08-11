@@ -17,6 +17,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return this.auth.validateToken(payload);
+    console.log('🔐 JWT validate called with payload:', payload);
+    try {
+      const result = await this.auth.validateToken(payload);
+      console.log('✅ JWT validate success, returning:', result);
+      return result;
+    } catch (e) {
+      console.error('❌ JWT validate error:', e.message);
+      throw e;
+    }
   }
 }
