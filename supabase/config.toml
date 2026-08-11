@@ -1,0 +1,30 @@
+# Supabase configuration
+
+[project]
+name = "iaezap"
+database_url = "postgresql://postgres:postgres@localhost:5432/postgres"
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+shadow_port = 54323
+major_version = 15
+
+[realtime]
+enabled = true
+max_bytes_per_second = 1000000
+
+[auth]
+enable_signup = true
+enable_anonymous_signups = false
+jwt_expiry = 3600
+jwt_secret = "super-secret-jwt-token-with-at-least-32-characters-long"
+
+[storage]
+file_size_limit = 52428800
+
+[vector]
+enabled = true

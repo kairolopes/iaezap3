@@ -1,0 +1,134 @@
+### Z-API WhatsApp Integration - Exemplos de Requisições
+
+@baseUrl = http://localhost:3000
+@phone = 5585987654321
+@imageUrl = https://via.placeholder.com/500x500?text=Exemplo
+@documentUrl = https://www.w3.org/WAI/WCAG21/Techniques/pdf/sample.pdf
+
+### 1. Enviar Mensagem de Texto
+POST {{baseUrl}}/api/whatsapp/send/text
+Content-Type: application/json
+
+{
+  "phone": "{{phone}}",
+  "message": "Olá! Esta é uma mensagem de teste do Z-API",
+  "delayMessage": 1000
+}
+
+### 2. Enviar Imagem
+POST {{baseUrl}}/api/whatsapp/send/image
+Content-Type: application/json
+
+{
+  "phone": "{{phone}}",
+  "imageUrl": "{{imageUrl}}",
+  "caption": "Esta é uma imagem de exemplo"
+}
+
+### 3. Enviar Mensagem com Botões
+POST {{baseUrl}}/api/whatsapp/send/buttons
+Content-Type: application/json
+
+{
+  "phone": "{{phone}}",
+  "message": "Qual é a sua dúvida?",
+  "buttons": [
+    {
+      "id": "btn_fatura",
+      "text": "Dúvida sobre fatura"
+    },
+    {
+      "id": "btn_produto",
+      "text": "Dúvida sobre produto"
+    },
+    {
+      "id": "btn_entrega",
+      "text": "Rastrear entrega"
+    }
+  ]
+}
+
+### 4. Enviar Documento PDF
+POST {{baseUrl}}/api/whatsapp/send/document
+Content-Type: application/json
+
+{
+  "phone": "{{phone}}",
+  "documentUrl": "{{documentUrl}}",
+  "fileName": "manual.pdf",
+  "caption": "Aqui está o manual do produto"
+}
+
+### 5. Registrar Webhook (chamar uma única vez)
+POST {{baseUrl}}/api/whatsapp/register-webhook
+Content-Type: application/json
+
+{
+  "webhookUrl": "https://seu-dominio-publico.com"
+}
+
+### 6. Simular Webhook Recebido (para testes)
+POST {{baseUrl}}/api/whatsapp/webhook
+Content-Type: application/json
+
+{
+  "type": "messages.upsert",
+  "data": {
+    "key": {
+      "remoteJid": "5585987654321@s.whatsapp.net",
+      "fromMe": false,
+      "id": "msg_123456789"
+    },
+    "message": {
+      "conversation": "Olá! Qual é o preço do seu produto?"
+    },
+    "messageTimestamp": "1705316400"
+  }
+}
+
+### 7. Simular Webhook de Status
+POST {{baseUrl}}/api/whatsapp/webhook
+Content-Type: application/json
+
+{
+  "type": "message.update",
+  "data": {
+    "key": {
+      "remoteJid": "5585987654321@s.whatsapp.net",
+      "fromMe": true,
+      "id": "msg_123456789"
+    },
+    "status": "RECEIVED",
+    "messageTimestamp": "1705316400"
+  }
+}
+
+###
+# NOTAS IMPORTANTES:
+#
+# 1. Substitua {{phone}} pelo número no formato internacional
+#    Exemplos: 5585987654321, 551133334444, 5511987654321
+#
+# 2. Substitua {{baseUrl}} pela URL da sua aplicação
+#    Desenvolvimento: http://localhost:3000
+#    Produção: https://seu-dominio.com
+#
+# 3. Webhook deve estar registrado ANTES de receber mensagens
+#    Use o endpoint "Registrar Webhook" uma única vez
+#
+# 4. Para testar localmente com ngrok:
+#    ngrok http 3000
+#    Depois configure a URL pública no webhook
+#
+# 5. Todas as respostas retornam mensagens no formato Z-API:
+#    {
+#      "id": "msg_xxxxx",
+#      "status": "QUEUED|SENT|RECEIVED|READ|FAILED",
+#      "timestamp": "2024-01-15T10:30:00Z"
+#    }
+#
+# 6. Para monitorar em tempo real, use:
+#    - Console do navegador (DevTools)
+#    - Logs da aplicação: npm run start:dev
+#    - Painel Z-API: https://z-api.io/central-do-desenvolvedor
+###

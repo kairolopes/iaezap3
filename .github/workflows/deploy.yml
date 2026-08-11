@@ -1,0 +1,73 @@
+name: 🚀 Auto Deploy VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 🔑 Setup SSH
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          SSH_HOST: ${{ secrets.VPS_HOST }}
+          SSH_USER: ${{ secrets.VPS_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+
+      - name: 📦 Deploy Backend
+        env:
+          SSH_HOST: ${{ secrets.VPS_HOST }}
+          SSH_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh $SSH_USER@$SSH_HOST << 'EOF'
+            cd /home/iaezap
+            git pull origin main
+
+            # Backend
+            cd backend
+            npm install
+            npm run build
+            pm2 restart iaezap-backend
+
+            echo "✅ Backend deployed"
+          EOF
+
+      - name: 🎨 Deploy Frontend
+        env:
+          SSH_HOST: ${{ secrets.VPS_HOST }}
+          SSH_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh $SSH_USER@$SSH_HOST << 'EOF'
+            cd /home/iaezap/frontend
+            npm install
+            npm run build
+
+            # Copy to Nginx (or Netlify)
+            echo "✅ Frontend built"
+          EOF
+
+      - name: 🔄 Restart Services
+        env:
+          SSH_HOST: ${{ secrets.VPS_HOST }}
+          SSH_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh $SSH_USER@$SSH_HOST << 'EOF'
+            pm2 restart iaezap-backend
+            sudo systemctl restart nginx
+            echo "✅ Services restarted"
+          EOF
+
+      - name: ✅ Deployment Complete
+        run: |
+          echo "🎉 Deploy concluído!"
+          echo "Frontend: https://iaezap.com.br"
+          echo "API: https://iaezap.com.br/api"

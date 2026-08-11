@@ -1,0 +1,36 @@
+🚀 IAEZAP DEPLOYMENT - COMANDO PARA RODAR NO VPS
+
+PASSO 1: Entre no seu VPS via SSH
+ssh root@179.198.102.88
+(Digite a senha: Bate123ria@5)
+
+PASSO 2: Cole este comando COMPLETO no terminal:
+
+---
+
+bash <(curl -fsSL https://raw.githubusercontent.com/kairolopes/iaezap3/main/deploy-vps.sh)
+
+---
+
+PASSO 3: Quando pedir confirmação do SSL, tecle: Y (sim)
+
+PRONTO! Script vai rodar automaticamente!
+
+---
+
+🎯 O que o script faz:
+✅ Instala Node.js, PM2, Nginx
+✅ Clona seu repositório do GitHub
+✅ Instala dependências (backend + frontend)
+✅ Compila frontend React
+✅ Configura variáveis de ambiente
+✅ Inicia backend com PM2
+✅ Configura Nginx como reverse proxy
+✅ Ativa SSL/HTTPS com Let's Encrypt
+✅ Configura redirect iaezap.com → iaezap.com.br
+
+⏱️ Tempo: ~10-15 minutos
+
+📝 Logs: pm2 logs iaezap-backend
+
+---

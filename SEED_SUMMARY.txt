@@ -1,0 +1,197 @@
+================================================================================
+                    IAEZAP - SEED DATA SUMMARY
+================================================================================
+
+ARQUIVOS CRIADOS:
+  1. supabase/migrations/seed.sql  - Script SQL com todos os dados
+  2. run-seed.js                   - Script Node.js para executar seed
+  3. SEED_GUIDE.md                 - Documentação completa (PT-BR)
+  4. SEED_SUMMARY.txt              - Este arquivo (referência rápida)
+
+================================================================================
+                          COMO USAR (Rápido)
+================================================================================
+
+Opção 1: Node.js (Recomendado)
+  $ node run-seed.js
+
+Opção 2: Supabase Console
+  1. Copie conteúdo de supabase/migrations/seed.sql
+  2. Cole em SQL Editor do Supabase
+  3. Clique em "Run"
+
+Opção 3: psql (Command Line)
+  $ psql "postgresql://postgres:PASSWORD@db.PROJECT.supabase.co:5432/postgres" \
+    -f supabase/migrations/seed.sql
+
+================================================================================
+                         DADOS CRIADOS
+================================================================================
+
+MASTER USER:
+  Email:    kairo@zapbaratinho.com.br
+  Password: Floral@2026
+  Role:     MASTER
+  Table:    auth.users + profiles
+
+COMPANY:
+  Name:          Floral da Esquina
+  Business Name: Floral da Esquina Ltda.
+  CNPJ:          12.345.678/0001-00
+  Owner:         Master User
+  Timezone:      America/Sao_Paulo
+  Table:         companies
+
+AGENTS (4 agentes):
+
+  1. Iaê (TRIAGE - Roteador)
+     ├─ Personality: Amigável e eficiente
+     ├─ Tone: FRIENDLY
+     ├─ 24h: SIM
+     ├─ can_create_order: NÃO
+     ├─ can_schedule: NÃO
+     └─ max_discount: 0%
+
+  2. Sales Agent (SALES - Vendedor)
+     ├─ Personality: Entusiasmado e persuasivo
+     ├─ Tone: FRIENDLY
+     ├─ 24h: SIM
+     ├─ can_create_order: SIM
+     ├─ can_schedule: NÃO
+     └─ max_discount: 10%
+
+  3. Scheduler (SCHEDULING - Agendador)
+     ├─ Personality: Profissional e organizador
+     ├─ Tone: PROFESSIONAL
+     ├─ 24h: SIM
+     ├─ can_create_order: NÃO
+     ├─ can_schedule: SIM
+     └─ max_discount: 0%
+
+  4. Support (SUPPORT - Suporte)
+     ├─ Personality: Empático e atencioso
+     ├─ Tone: HELPFUL
+     ├─ 24h: SIM
+     ├─ can_create_order: NÃO
+     ├─ can_schedule: NÃO
+     └─ max_discount: 15%
+
+  Table: agents
+
+================================================================================
+                      VERIFICAR DADOS (SQL)
+================================================================================
+
+-- Ver master user
+SELECT id, email, role FROM auth.users
+WHERE email = 'kairo@zapbaratinho.com.br';
+
+-- Ver profile
+SELECT * FROM profiles
+WHERE email = 'kairo@zapbaratinho.com.br';
+
+-- Ver company
+SELECT * FROM companies
+WHERE name = 'Floral da Esquina';
+
+-- Ver agents
+SELECT id, name, role, is_active FROM agents
+WHERE company_id = (
+  SELECT id FROM companies
+  WHERE name = 'Floral da Esquina'
+) ORDER BY role;
+
+-- Contar registros
+SELECT
+  (SELECT COUNT(*) FROM auth.users) as users,
+  (SELECT COUNT(*) FROM profiles) as profiles,
+  (SELECT COUNT(*) FROM companies) as companies,
+  (SELECT COUNT(*) FROM agents) as agents;
+
+================================================================================
+                      PERSONALIZAR DADOS
+================================================================================
+
+Edite supabase/migrations/seed.sql para alterar:
+
+1. Email do Master User:
+   Procure: WHERE email = 'kairo@zapbaratinho.com.br'
+   Mude para seu email
+
+2. Password do Master User:
+   Procure: crypt('Floral@2026', gen_salt('bf'))
+   Mude a string 'Floral@2026'
+
+3. Nome da Company:
+   Procure: name = 'Floral da Esquina'
+   Mude para seu nome
+
+4. CNPJ da Company:
+   Procure: cnpj = '12.345.678/0001-00'
+   Mude para seu CNPJ
+
+5. Nome/Propriedades dos Agents:
+   Localize a seção "WITH company_lookup AS" de cada agent
+   Customize: name, role, personality, tone, instructions, etc.
+
+================================================================================
+                      OBSERVAÇÕES
+================================================================================
+
+✓ Script é idempotente - seguro rodar múltiplas vezes
+✓ Usa ON CONFLICT DO NOTHING para evitar duplicatas
+✓ Requer extensão pgcrypto no PostgreSQL (padrão no Supabase)
+✓ UUIDs são gerados automaticamente pelo PostgreSQL
+✓ Timestamps usam NOW() para data/hora atuais
+
+⚠ Se receber erro de permissão ao criar user em auth.users:
+  1. Crie o user manualmente via Supabase Dashboard
+  2. O resto do seed funcionará normalmente
+
+================================================================================
+                      PRÓXIMAS ETAPAS
+================================================================================
+
+1. Depois do seed, suba a aplicação:
+   $ cd backend && npm install && npm run start:dev
+   $ cd frontend && npm install && npm run dev
+
+2. Frontend: http://localhost:5173
+3. Backend: http://localhost:3000
+4. Login com: kairo@zapbaratinho.com.br / Floral@2026
+
+5. Implemente:
+   - Routing logic para Iaê
+   - WhatsApp integration
+   - Real-time conversations
+   - Dashboard
+
+================================================================================
+                      ESTRUTURA FINAL
+================================================================================
+
+auth.users
+├── kairo@zapbaratinho.com.br (authenticated)
+
+profiles
+├── kairo@zapbaratinho.com.br (MASTER)
+
+companies
+├── Floral da Esquina
+│   └── owner_id: kairo (uuid)
+
+agents
+├── Iaê (TRIAGE) → company_id: Floral da Esquina
+├── Sales Agent (SALES) → company_id: Floral da Esquina
+├── Scheduler (SCHEDULING) → company_id: Floral da Esquina
+└── Support (SUPPORT) → company_id: Floral da Esquina
+
+conversations (vazio - criar via API)
+messages (vazio - criar via API)
+documents (vazio - adicionar knowledge base)
+whatsapp_numbers (vazio - adicionar números)
+
+================================================================================
+Data: 2026-08-11
+Versão: 1.0
+================================================================================
