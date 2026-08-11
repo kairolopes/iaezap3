@@ -7,6 +7,8 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
@@ -61,30 +63,91 @@ export class AuthController {
     };
   }
 
-  @Post('admin/create-user')
-  @HttpCode(HttpStatus.CREATED)
-  async createUserAdmin(@Body() body: { email: string; name: string; role?: string }) {
-    try {
-      const supabaseAdmin = this.auth['supabase'].getAdminClient();
-
-      const { data, error } = await supabaseAdmin.auth.admin.createUser({
-        email: body.email,
-        password: Math.random().toString(36).slice(-12),
-        email_confirm: true,
-        user_metadata: { name: body.name },
-      });
-
-      if (error) throw new Error(error.message);
-
-      return {
-        id: data.user.id,
-        email: data.user.email,
-        name: body.name,
-        role: body.role || 'user',
-        message: 'User created successfully. User can reset password via email.',
-      };
-    } catch (error: any) {
-      throw new UnauthorizedException(error.message || 'Failed to create user');
+  private checkMasterAdmin(email: string) {
+    if (email !== 'kairolopes@gmail.com') {
+      throw new ForbiddenException('Only kairolopes@gmail.com can perform this action');
     }
+  }
+
+  @Post('admin/company')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async createCompany(@Request() req: any, @Body() body: { name: string }) {
+    this.checkMasterAdmin(req.user.email);
+    const supabase = this.auth['supabase'].getClient();
+
+    const { data, error } = await supabase
+      .from('companies')
+      .insert({ name: body.name, created_by: req.user.sub })
+      .select()
+      .single();
+
+    if (error) throw new BadRequestException(error.message);
+    return { company: data, message: 'Company created successfully' };
+  }
+
+  @Post('admin/company/:companyId/user')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async createCompanyUser(
+    @Request() req: any,
+    @Body() body: { email: string; name: string; companyId: string }
+  ) {
+    this.checkMasterAdmin(req.user.email);
+    const supabaseAdmin = this.auth['supabase'].getAdminClient();
+    const supabase = this.auth['supabase'].getClient();
+
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
+      email: body.email,
+      password: Math.random().toString(36).slice(-12),
+      email_confirm: true,
+      user_metadata: { name: body.name },
+    });
+
+    if (userError) throw new BadRequestException(userError.message);
+
+    const { data: linkData, error: linkError } = await supabase
+      .from('user_companies')
+      .insert({
+        user_id: userData.user.id,
+        company_id: body.companyId,
+        role: 'user',
+      })
+      .select()
+      .single();
+
+    if (linkError) throw new BadRequestException(linkError.message);
+
+    return {
+      user: { id: userData.user.id, email: userData.user.email, name: body.name },
+      company_id: body.companyId,
+      message: 'User created and linked to company. User can reset password via email.',
+    };
+  }
+
+  @Get('admin/companies')
+  @UseGuards(JwtAuthGuard)
+  async getCompanies(@Request() req: any) {
+    this.checkMasterAdmin(req.user.email);
+    const supabase = this.auth['supabase'].getClient();
+
+    const { data, error } = await supabase.from('companies').select('*');
+    if (error) throw new BadRequestException(error.message);
+    return { companies: data };
+  }
+
+  @Get('admin/company/:companyId/users')
+  @UseGuards(JwtAuthGuard)
+  async getCompanyUsers(@Request() req: any) {
+    this.checkMasterAdmin(req.user.email);
+    const supabase = this.auth['supabase'].getClient();
+
+    const { data, error } = await supabase
+      .from('user_companies')
+      .select('*')
+      .eq('company_id', req.params.companyId);
+
+    if (error) throw new BadRequestException(error.message);
+    return { users: data };
   }
 }
