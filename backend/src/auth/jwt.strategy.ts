@@ -9,11 +9,14 @@ const Strategy = passport.Strategy;
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private auth: AuthService) {
+    const secret = process.env.JWT_SECRET || 'dev-secret';
+    console.log('🔐 JwtStrategy initialized with secret length:', secret.length);
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'dev-secret',
+      secretOrKey: secret,
     });
+    console.log('✅ JwtStrategy PassportStrategy configured');
   }
 
   async validate(payload: any) {
