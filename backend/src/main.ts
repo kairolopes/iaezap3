@@ -10,9 +10,12 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' ? ['https://app.iaezap.com'] : '*',
+    origin: '*',
     credentials: true,
   });
+
+  // Global API prefix
+  app.setGlobalPrefix('api');
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
