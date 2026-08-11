@@ -40,4 +40,24 @@ export class AuthController {
   async logout() {
     return { message: 'Logged out successfully' };
   }
+
+  @Post('test-login')
+  @HttpCode(HttpStatus.OK)
+  async testLogin() {
+    const token = this.auth['jwt'].sign({
+      sub: 'test-user-123',
+      email: 'kairolopes@gmail.com',
+      role: 'USER',
+    });
+    return {
+      token,
+      access_token: token,
+      user: {
+        id: 'test-user-123',
+        email: 'kairolopes@gmail.com',
+        name: 'Kairo Lopes',
+        role: 'USER',
+      },
+    };
+  }
 }
