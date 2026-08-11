@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios'
 
-const API_BASE_URL = process.env.VITE_API_URL || '/api'
+const API_BASE_URL = '/api'
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
