@@ -9,13 +9,20 @@ import {
   HttpStatus,
   BadRequestException,
   ForbiddenException,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt.guard';
+import { SupabaseService } from '../supabase/supabase.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private supabase: SupabaseService,
+    private jwt: JwtService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -46,7 +53,7 @@ export class AuthController {
   @Post('test-login')
   @HttpCode(HttpStatus.OK)
   async testLogin() {
-    const token = this.auth['jwt'].sign({
+    const token = this.jwt.sign({
       sub: 'test-user-123',
       email: 'kairolopes@gmail.com',
       role: 'USER',
@@ -74,7 +81,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async createCompany(@Request() req: any, @Body() body: { name: string }) {
     this.checkMasterAdmin(req.user.email);
-    const supabase = this.auth['supabase'].getClient();
+    const supabase = this.supabase.getClient();
 
     const { data, error } = await supabase
       .from('companies')
@@ -94,8 +101,8 @@ export class AuthController {
     @Body() body: { email: string; name: string; companyId: string }
   ) {
     this.checkMasterAdmin(req.user.email);
-    const supabaseAdmin = this.auth['supabase'].getAdminClient();
-    const supabase = this.auth['supabase'].getClient();
+    const supabaseAdmin = this.supabase.getAdminClient();
+    const supabase = this.supabase.getClient();
 
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
       email: body.email,
@@ -129,7 +136,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async getCompanies(@Request() req: any) {
     this.checkMasterAdmin(req.user.email);
-    const supabase = this.auth['supabase'].getClient();
+    const supabase = this.supabase.getClient();
 
     const { data, error } = await supabase.from('companies').select('*');
     if (error) throw new BadRequestException(error.message);
@@ -138,14 +145,14 @@ export class AuthController {
 
   @Get('admin/company/:companyId/users')
   @UseGuards(JwtAuthGuard)
-  async getCompanyUsers(@Request() req: any) {
+  async getCompanyUsers(@Request() req: any, @Param('companyId') companyId: string) {
     this.checkMasterAdmin(req.user.email);
-    const supabase = this.auth['supabase'].getClient();
+    const supabase = this.supabase.getClient();
 
     const { data, error } = await supabase
       .from('user_companies')
       .select('*')
-      .eq('company_id', req.params.companyId);
+      .eq('company_id', companyId);
 
     if (error) throw new BadRequestException(error.message);
     return { users: data };
