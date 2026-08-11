@@ -4,16 +4,25 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 @Injectable()
 export class SupabaseService {
   private supabase: SupabaseClient;
+  private supabaseAdmin: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(
       process.env.SUPABASE_URL || '',
       process.env.SUPABASE_ANON_KEY || '',
     );
+    this.supabaseAdmin = createClient(
+      process.env.SUPABASE_URL || '',
+      process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+    );
   }
 
   getClient() {
     return this.supabase;
+  }
+
+  getAdminClient() {
+    return this.supabaseAdmin;
   }
 
   // Auth
@@ -23,6 +32,10 @@ export class SupabaseService {
 
   async login(email: string, password: string) {
     return this.supabase.auth.signInWithPassword({ email, password });
+  }
+
+  async getUser(userId: string) {
+    return this.supabaseAdmin.auth.admin.getUserById(userId);
   }
 
   // Agents CRUD

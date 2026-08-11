@@ -1,39 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../prisma/prisma.service';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwt: JwtService) {}
+  constructor(
+    private jwt: JwtService,
+    private supabase: SupabaseService,
+  ) {}
 
   async register(email: string, password: string, name: string) {
-    // Hash password before saving
-    const user = await this.prisma.user.create({
-      data: { email, password, name, role: 'ADMIN' },
-    });
-    return { id: user.id, email: user.email };
+    try {
+      const { data, error } = await this.supabase.signup(email, password);
+      if (error || !data.user) {
+        throw new UnauthorizedException(error?.message || 'Registration failed');
+      }
+      return { id: data.user.id, email: data.user.email, name };
+    } catch (error: any) {
+      throw new UnauthorizedException(error.message || 'Registration failed');
+    }
   }
 
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (!user || user.password !== password) {
-      throw new Error('Invalid credentials');
+    try {
+      const { data, error } = await this.supabase.login(email, password);
+      if (error || !data.user || !data.session) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
+
+      const token = this.jwt.sign({
+        sub: data.user.id,
+        email: data.user.email,
+        role: 'USER',
+      });
+
+      return {
+        token,
+        access_token: token,
+        user: {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.user_metadata?.name || email.split('@')[0],
+          role: 'USER',
+        },
+      };
+    } catch (error: any) {
+      throw new UnauthorizedException(error.message || 'Authentication failed');
     }
-
-    const token = this.jwt.sign({
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-      companyId: user.companyId,
-    });
-
-    return { token, user };
   }
 
   async validateToken(payload: any) {
-    return await this.prisma.user.findUnique({
-      where: { id: payload.sub },
-      include: { company: true },
-    });
-  }
+    const user = await this.supabase.getUser(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return user;
 }
