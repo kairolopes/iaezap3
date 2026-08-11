@@ -50,6 +50,13 @@ export class AuthController {
     return { message: 'Logged out successfully' };
   }
 
+  @Get('test-guard')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async testGuard(@Request() req: any) {
+    return { message: 'Guard works!', user: req.user };
+  }
+
   @Post('test-login')
   @HttpCode(HttpStatus.OK)
   async testLogin() {
