@@ -267,20 +267,12 @@ export class ZApiService {
       {
         company_id: companyId,
         contact_phone: '+5511987654321',
-        contact_name: 'João Silva',
         status: 'active',
-        last_message: 'Olá, tudo bem?',
-        last_message_at: new Date().toISOString(),
-        message_count: 5,
       },
       {
         company_id: companyId,
         contact_phone: '+5511912345678',
-        contact_name: 'Maria Santos',
         status: 'active',
-        last_message: 'Sim, estou aqui!',
-        last_message_at: new Date().toISOString(),
-        message_count: 3,
       },
     ];
 
