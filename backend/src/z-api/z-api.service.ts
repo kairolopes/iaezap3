@@ -266,13 +266,9 @@ export class ZApiService {
     const conversations = [
       {
         company_id: companyId,
-        contact_phone: '+5511987654321',
-        status: 'active',
       },
       {
         company_id: companyId,
-        contact_phone: '+5511912345678',
-        status: 'active',
       },
     ];
 
