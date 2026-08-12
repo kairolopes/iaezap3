@@ -296,18 +296,9 @@ export class ZApiService {
     const companyId = '550e8400-e29b-41d4-a716-446655440000';
     const client = this.supabase.getClient();
 
-    // Create company
-    const { data: company, error: companyError } = await client
-      .from('companies')
-      .insert({ id: companyId, name: 'Test Company' })
-      .select()
-      .single();
+    this.logger.debug(`Seeding conversations for company: ${companyId}`);
 
-    if (companyError && !companyError.message.includes('duplicate')) {
-      this.logger.error(`Error creating company: ${companyError.message}`);
-    }
-
-    // Create conversations
+    // Create conversations (company must exist in database)
     const conversations = [
       {
         company_id: companyId,
@@ -329,9 +320,10 @@ export class ZApiService {
       throw convError;
     }
 
+    this.logger.log(`✅ Created ${conversationData?.length || 0} test conversations`);
     return {
       success: true,
-      message: `Created test company and ${conversationData?.length || 0} conversations`,
+      message: `Created ${conversationData?.length || 0} test conversations`,
       companyId,
       conversations: conversationData,
     };
