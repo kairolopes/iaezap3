@@ -42,10 +42,21 @@ export class AuthService {
         throw new UnauthorizedException('Invalid email or password');
       }
 
+      const client = this.supabase.getClient();
+      const { data: userCompanyData } = await client
+        .from('user_companies')
+        .select('company_id')
+        .eq('user_id', data.user.id)
+        .limit(1)
+        .single();
+
+      const companyId = userCompanyData?.company_id || null;
+
       const token = this.jwt.sign({
         sub: data.user.id,
         email: data.user.email,
         role: 'USER',
+        companyId,
       });
 
       return {
@@ -56,6 +67,7 @@ export class AuthService {
           email: data.user.email,
           name: data.user.user_metadata?.name || email.split('@')[0],
           role: 'USER',
+          companyId,
         },
       };
     } catch (error: any) {

@@ -66,10 +66,12 @@ export class AuthController {
   @Post('test-login')
   @HttpCode(HttpStatus.OK)
   async testLogin() {
+    const testCompanyId = 'default-test-company-id';
     const token = this.jwt.sign({
       sub: 'test-user-123',
       email: 'kairolopes@gmail.com',
       role: 'USER',
+      companyId: testCompanyId,
     });
     return {
       token,
@@ -79,6 +81,7 @@ export class AuthController {
         email: 'kairolopes@gmail.com',
         name: 'Kairo Lopes',
         role: 'USER',
+        companyId: testCompanyId,
       },
     };
   }
