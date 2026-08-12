@@ -266,9 +266,11 @@ export class ZApiService {
     const conversations = [
       {
         company_id: companyId,
+        customer_phone: '+5511987654321',
       },
       {
         company_id: companyId,
+        customer_phone: '+5511912345678',
       },
     ];
 
