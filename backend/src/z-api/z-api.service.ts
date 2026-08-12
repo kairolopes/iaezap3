@@ -292,13 +292,24 @@ export class ZApiService {
     };
   }
 
-  async seedAll() {
+  async seedAll(userId: string) {
     const companyId = '550e8400-e29b-41d4-a716-446655440000';
     const client = this.supabase.getClient();
 
-    this.logger.debug(`Seeding conversations for company: ${companyId}`);
+    this.logger.debug(`Seeding for user: ${userId}, company: ${companyId}`);
 
-    // Create conversations (company must exist in database)
+    // Create company with user as owner
+    const { data: company, error: companyError } = await client
+      .from('companies')
+      .insert({ id: companyId, name: 'Test Company', owner_id: userId })
+      .select()
+      .single();
+
+    if (companyError && !companyError.message.includes('duplicate')) {
+      this.logger.error(`Error creating company: ${companyError.message}`);
+    }
+
+    // Create conversations
     const conversations = [
       {
         company_id: companyId,
@@ -320,10 +331,10 @@ export class ZApiService {
       throw convError;
     }
 
-    this.logger.log(`✅ Created ${conversationData?.length || 0} test conversations`);
+    this.logger.log(`✅ Created company and ${conversationData?.length || 0} conversations`);
     return {
       success: true,
-      message: `Created ${conversationData?.length || 0} test conversations`,
+      message: `Created company and ${conversationData?.length || 0} test conversations`,
       companyId,
       conversations: conversationData,
     };

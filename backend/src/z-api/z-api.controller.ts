@@ -177,9 +177,10 @@ export class ZApiController {
   }
 
   @Post('seed-all')
-  async seedAll() {
+  async seedAll(@Request() req: any) {
     try {
-      const result = await this.zapi.seedAll();
+      const userId = req.user?.sub;
+      const result = await this.zapi.seedAll(userId);
       return result;
     } catch (error) {
       this.logger.error(`Error in seedAll: ${error.message}`);
