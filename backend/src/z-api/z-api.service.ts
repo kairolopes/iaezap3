@@ -258,4 +258,47 @@ export class ZApiService {
       // Don't throw - we've already saved the message
     }
   }
+
+  async seedTestConversations() {
+    const companyId = '550e8400-e29b-41d4-a716-446655440000';
+    const client = this.supabase.getClient();
+
+    const conversations = [
+      {
+        company_id: companyId,
+        contact_phone: '+5511987654321',
+        contact_name: 'João Silva',
+        status: 'active',
+        last_message: 'Olá, tudo bem?',
+        last_message_at: new Date().toISOString(),
+        message_count: 5,
+      },
+      {
+        company_id: companyId,
+        contact_phone: '+5511912345678',
+        contact_name: 'Maria Santos',
+        status: 'active',
+        last_message: 'Sim, estou aqui!',
+        last_message_at: new Date().toISOString(),
+        message_count: 3,
+      },
+    ];
+
+    const { data, error } = await client
+      .from('conversations')
+      .insert(conversations)
+      .select();
+
+    if (error) {
+      this.logger.error(`Error seeding conversations: ${error.message}`);
+      throw error;
+    }
+
+    this.logger.log(`Seeded ${data?.length || 0} test conversations`);
+    return {
+      success: true,
+      message: `Created ${data?.length || 0} test conversations`,
+      conversations: data,
+    };
+  }
 }

@@ -157,4 +157,22 @@ export class ZApiController {
       );
     }
   }
+
+  @Post('seed-conversations')
+  async seedConversations() {
+    try {
+      const result = await this.zapi.seedTestConversations();
+      return result;
+    } catch (error) {
+      this.logger.error(`Error in seedConversations: ${error.message}`);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error seeding conversations',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
