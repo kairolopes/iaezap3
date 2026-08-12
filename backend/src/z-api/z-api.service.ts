@@ -291,4 +291,49 @@ export class ZApiService {
       conversations: data,
     };
   }
+
+  async seedAll() {
+    const companyId = '550e8400-e29b-41d4-a716-446655440000';
+    const client = this.supabase.getClient();
+
+    // Create company
+    const { data: company, error: companyError } = await client
+      .from('companies')
+      .insert({ id: companyId, name: 'Test Company' })
+      .select()
+      .single();
+
+    if (companyError && !companyError.message.includes('duplicate')) {
+      this.logger.error(`Error creating company: ${companyError.message}`);
+    }
+
+    // Create conversations
+    const conversations = [
+      {
+        company_id: companyId,
+        customer_phone: '+5511987654321',
+      },
+      {
+        company_id: companyId,
+        customer_phone: '+5511912345678',
+      },
+    ];
+
+    const { data: conversationData, error: convError } = await client
+      .from('conversations')
+      .insert(conversations)
+      .select();
+
+    if (convError) {
+      this.logger.error(`Error seeding conversations: ${convError.message}`);
+      throw convError;
+    }
+
+    return {
+      success: true,
+      message: `Created test company and ${conversationData?.length || 0} conversations`,
+      companyId,
+      conversations: conversationData,
+    };
+  }
 }

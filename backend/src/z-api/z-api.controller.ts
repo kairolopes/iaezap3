@@ -175,4 +175,22 @@ export class ZApiController {
       );
     }
   }
+
+  @Post('seed-all')
+  async seedAll() {
+    try {
+      const result = await this.zapi.seedAll();
+      return result;
+    } catch (error) {
+      this.logger.error(`Error in seedAll: ${error.message}`);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error seeding data',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
