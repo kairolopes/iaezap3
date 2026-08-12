@@ -66,7 +66,7 @@ export class AuthController {
   @Post('test-login')
   @HttpCode(HttpStatus.OK)
   async testLogin() {
-    const testCompanyId = 'default-test-company-id';
+    const testCompanyId = '550e8400-e29b-41d4-a716-446655440000';
     const token = this.jwt.sign({
       sub: 'test-user-123',
       email: 'kairolopes@gmail.com',
