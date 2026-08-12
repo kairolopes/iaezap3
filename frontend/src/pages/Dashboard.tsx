@@ -9,7 +9,7 @@ export function Dashboard() {
   const [activeTab, setActiveTab] = useState('conversations')
 
   const navItems = [
-    { id: 'conversations', label: 'Conversas' },
+    { id: 'conversations', label: 'CONVERSAS_TEST' },
     { id: 'whatsapp', label: 'WhatsApp' },
     { id: 'agents', label: 'Agentes' },
     { id: 'products', label: 'Produtos' },
