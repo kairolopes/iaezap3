@@ -263,6 +263,24 @@ export class ZApiService {
     const companyId = '550e8400-e29b-41d4-a716-446655440000';
     const client = this.supabase.getClient();
 
+    // First, create the company if it doesn't exist
+    const { data: existingCompany } = await client
+      .from('companies')
+      .select('id')
+      .eq('id', companyId)
+      .single();
+
+    if (!existingCompany) {
+      const { error: companyError } = await client
+        .from('companies')
+        .insert({ id: companyId, name: 'Test Company' });
+
+      if (companyError) {
+        this.logger.error(`Error creating company: ${companyError.message}`);
+        throw companyError;
+      }
+    }
+
     const conversations = [
       {
         company_id: companyId,
