@@ -259,8 +259,7 @@ export class ZApiService {
     }
   }
 
-  async seedTestConversations() {
-    const companyId = '550e8400-e29b-41d4-a716-446655440000';
+  async seedTestConversations(companyId: string) {
     const client = this.supabase.getClient();
 
     const conversations = [
@@ -284,10 +283,11 @@ export class ZApiService {
       throw error;
     }
 
-    this.logger.log(`Seeded ${data?.length || 0} test conversations`);
+    this.logger.log(`Seeded ${data?.length || 0} test conversations for company ${companyId}`);
     return {
       success: true,
       message: `Created ${data?.length || 0} test conversations`,
+      companyId,
       conversations: data,
     };
   }

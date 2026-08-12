@@ -158,10 +158,10 @@ export class ZApiController {
     }
   }
 
-  @Post('seed-conversations')
-  async seedConversations() {
+  @Post('seed-conversations/:companyId')
+  async seedConversations(@Param('companyId') companyId: string) {
     try {
-      const result = await this.zapi.seedTestConversations();
+      const result = await this.zapi.seedTestConversations(companyId);
       return result;
     } catch (error) {
       this.logger.error(`Error in seedConversations: ${error.message}`);
