@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useAuthStore } from '../store/auth'
 import { AgentList } from '../components/AgentList'
+import { ConversationList } from '../components/ConversationList'
+import { WhatsappPage } from './WhatsappPage'
 
 export function Dashboard() {
   const { user, logout } = useAuthStore()
@@ -8,6 +10,7 @@ export function Dashboard() {
 
   const navItems = [
     { id: 'conversations', label: 'Conversas' },
+    { id: 'whatsapp', label: 'WhatsApp' },
     { id: 'agents', label: 'Agentes' },
     { id: 'products', label: 'Produtos' },
     { id: 'analytics', label: 'Analytics' },
@@ -125,20 +128,12 @@ export function Dashboard() {
         <div style={{ flex: 1, padding: '30px', overflowY: 'auto' }}>
           {/* Conversas */}
           {activeTab === 'conversations' && (
-            <div>
-              <div style={{
-                background: '#1d1f2e',
-                border: '1px solid #292b31',
-                borderRadius: '8px',
-                padding: '40px 20px',
-                textAlign: 'center',
-                color: '#75798c',
-              }}>
-                <p style={{ margin: 0, fontSize: '14px' }}>
-                  Nenhuma conversa ainda. Aguardando primeira mensagem no WhatsApp...
-                </p>
-              </div>
-            </div>
+            <ConversationList />
+          )}
+
+          {/* WhatsApp */}
+          {activeTab === 'whatsapp' && (
+            <WhatsappPage />
           )}
 
           {/* Agentes */}

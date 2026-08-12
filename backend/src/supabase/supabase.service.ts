@@ -27,7 +27,13 @@ export class SupabaseService {
 
   // Auth
   async signup(email: string, password: string) {
-    return this.supabase.auth.signUp({ email, password });
+    return this.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${process.env.FRONTEND_URL || 'https://iaezap.com.br'}/auth/confirm`,
+      },
+    });
   }
 
   async login(email: string, password: string) {

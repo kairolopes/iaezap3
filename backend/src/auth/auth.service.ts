@@ -11,12 +11,26 @@ export class AuthService {
 
   async register(email: string, password: string, name: string) {
     try {
+      console.log('📝 register() called with email:', email);
       const { data, error } = await this.supabase.signup(email, password);
-      if (error || !data.user) {
-        throw new UnauthorizedException(error?.message || 'Registration failed');
+      console.log('🔐 Supabase signup response:', { hasData: !!data, hasError: !!error, errorMsg: error?.message });
+      if (error) {
+        console.error('❌ Supabase signup error:', error);
+        throw new UnauthorizedException(error.message || 'Signup failed');
       }
-      return { id: data.user.id, email: data.user.email, name };
+      if (!data.user) {
+        console.error('❌ No user in signup response');
+        throw new UnauthorizedException('No user created');
+      }
+      console.log('✅ User created:', data.user.id, data.user.email);
+      return {
+        id: data.user.id,
+        email: data.user.email,
+        name,
+        message: 'Verifique seu email para confirmar o registro',
+      };
     } catch (error: any) {
+      console.error('💥 Register exception:', error.message, error);
       throw new UnauthorizedException(error.message || 'Registration failed');
     }
   }

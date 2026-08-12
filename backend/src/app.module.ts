@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { AgentModule } from './agent/agent.module';
 import { ConversationModule } from './conversation/conversation.module';
+import { ZApiModule } from './z-api/z-api.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ConversationModule } from './conversation/conversation.module';
     AuthModule,
     AgentModule,
     ConversationModule,
+    ZApiModule,
   ],
 })
 export class AppModule {}
