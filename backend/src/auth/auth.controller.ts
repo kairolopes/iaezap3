@@ -98,7 +98,7 @@ export class AuthController {
 
     const { data, error } = await supabase
       .from('companies')
-      .insert({ name: body.name, created_by: req.user.sub })
+      .insert({ name: body.name })
       .select()
       .single();
 
