@@ -8,6 +8,7 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ZApiService } from './z-api.service';
@@ -177,7 +178,7 @@ export class ZApiController {
   }
 
   @Post('seed-all')
-  async seedAll(@Request() req: any) {
+  async seedAll(@Req() req: any) {
     try {
       const userId = req.user?.sub;
       const result = await this.zapi.seedAll(userId);
