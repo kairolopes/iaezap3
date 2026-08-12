@@ -261,17 +261,17 @@ export class ZApiService {
 
   async seedTestConversations() {
     const companyId = '550e8400-e29b-41d4-a716-446655440000';
-    const client = this.supabase.getClient();
+    const adminClient = this.supabase.getAdminClient();
 
     // First, create the company if it doesn't exist
-    const { data: existingCompany } = await client
+    const { data: existingCompany } = await adminClient
       .from('companies')
       .select('id')
       .eq('id', companyId)
       .single();
 
     if (!existingCompany) {
-      const { error: companyError } = await client
+      const { error: companyError } = await adminClient
         .from('companies')
         .insert({ id: companyId, name: 'Test Company' });
 
@@ -292,7 +292,7 @@ export class ZApiService {
       },
     ];
 
-    const { data, error } = await client
+    const { data, error } = await adminClient
       .from('conversations')
       .insert(conversations)
       .select();
